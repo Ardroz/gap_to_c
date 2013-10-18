@@ -56,10 +56,6 @@ function createSheet ( sheet ) {
         code = code.concat('_');
         code = code.concat( element.Name );
         code = code.concat('_');
-        code = code.concat( element.BlockType );
-        code = code.concat(' = ');
-        code = code.concat( element.BlockType );
-        code = code.concat('_FUNCTION( ');
 
         database.query( selectField, function ( error, result, row ) {
           if ( error ) {
@@ -67,7 +63,8 @@ function createSheet ( sheet ) {
           } else {
             var stringInputs = "",
                 inputValues = new Array,
-                tuneValues = new Array;
+                tuneValues = new Array,
+                outputValues = new Array;
 
             result.forEach( function ( element, index, array) {
               if ( element.IOType === 'Input' ){
@@ -83,6 +80,14 @@ function createSheet ( sheet ) {
                   } else {
                     tuneValues.push( element.Value );
                   }
+                } else {
+                  if ( element.IOType === 'Output' ) {
+                    if ( element.Value != null ) {
+                      outputValues.push( element.Value );
+                    } else {
+                      outputValues.push( element.FieldName );
+                    }
+                  }
                 }
               }
             });
@@ -95,11 +100,28 @@ function createSheet ( sheet ) {
 
             //stringInputs = stringInputs.concat( '\n Aqui acaban los inputs de' + element.ndxBlock );
             stringInputs = stringInputs.replace(/\56/g,"_");
-
-            code = code.concat( stringInputs );
-            code = code.concat(' );\n');
-            bigCode = bigCode.concat( code );
-            saveText( bigCode, sheet );
+            if ( outputValues.length < 2 ) {
+              code = code.concat( element.BlockType );
+              code = code.concat(' = ');
+              code = code.concat( element.BlockType );
+              code = code.concat('_FUNCTION( ');
+              code = code.concat( stringInputs );
+              code = code.concat(' );\n');
+              bigCode = bigCode.concat( code );
+              saveText( bigCode, sheet );
+            } else{
+              var lol = code;
+              outputValues.forEach( function ( element, index, array ) {
+                code = lol.concat( element );
+                code = code.concat(' = ');
+                code = code.concat( element );
+                code = code.concat('_FUNCTION( ');
+                code = code.concat( stringInputs );
+                code = code.concat(' );\n');
+                bigCode = bigCode.concat( code );
+                saveText( bigCode, sheet );
+              });
+            }
           }
         });
       });
