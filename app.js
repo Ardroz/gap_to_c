@@ -4,10 +4,13 @@
 
 var fs      = require('fs-extra'),
     mysql   = require('mysql'),
+    readline = require('readline'),
     path    = require('path');
 
-var projectPath = './rendered_code';
-
+var rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 function databaseInstance(){
   var connection = mysql.createConnection({
@@ -18,75 +21,96 @@ function databaseInstance(){
   return connection;
 }
 
-function createString ( error, result, row) {
-  if( error ){
-    console.log( error );
-  } else {
-    var code;
+function saveText ( text, sheet ){
+  var projectPath = './rendered_code';
 
-    code = result[0].Category;
-    code = code.concat('_');
-    code = code.concat( result[0].Name );
-    code = code.concat('_');
-    code = code.concat( result[0].BlockType );
-    code = code.concat(' = ');
-    code = code.concat( result[0].BlockType );
-    code = code.concat('_FUNCTION( ');
+  fs.exists( projectPath , function ( exists ){
+    fs.mkdirsSync( projectPath );
 
-    database.query( selectField, function ( error, result, row ) {
-      if ( error ) {
-        console.log( error );
-      } else {
-        var stringInputs = "",
-            inputValues = new Array,
-            tuneValues = new Array;
-
-        result.forEach( function ( element, index, array) {
-          if ( element.IOType === 'Input' ){
-            if ( element.Value === null ) {
-              inputValues.push('0')
-            } else{
-              inputValues.push( element.Value );
-            }
-          } else{
-            if ( element.IOType === 'Tune' ) {
-              if ( element.Value === '*FALSE' ) {
-                tuneValues.push( 0 );
-              } else {
-                tuneValues.push( element.Value );
-              }
-            }
-          }
-        });
-
-        stringInputs = inputValues.join(' , ');
-        stringInputs = stringInputs.concat(' , ');
-        stringInputs = stringInputs.concat(tuneValues.join(' , '));
-
-        stringInputs = stringInputs.replace(/\56/g,"_");
-
-        code = code.concat( stringInputs );
-        code = code.concat(' );');
-
-        fs.exists( projectPath , function ( exists ){
-
-          console.log(projectPath);
-          console.log(exists);
-
-          fs.mkdirsSync( projectPath );
-
-          fs.writeFile( projectPath + '/bloque1.c', code , function (err) {
-            if (err) throw err;
-            console.log('Creado :) te amo');
-          });
-        });
-      }
+    fs.writeFile( projectPath + '/sheet' + sheet + '.c', text , function (err) {
+      if (err) throw err;
+      console.log( 'Creado ' + projectPath + '/sheet' + sheet + '.c');
     });
-  }
+  });
 }
 
 var database =  new databaseInstance(),
-                selectBlock = 'SELECT * FROM gap.tblBlocks WHERE ndxSheet = 1',
-                selectField = 'SELECT * FROM gap.tblFields WHERE ndxBlock = 1';
+                selectSheet = '',
+                selectField = '';
 
-//database.query( selectBlock, createString );
+function createSheet ( sheet ) {
+  selectSheet = 'SELECT * FROM gap.tblBlocks WHERE ndxSheet = ' + sheet;
+  database.query( selectSheet, function ( error, result, row) {
+    if( error ){
+      console.log( error );
+    } else {
+      var bigCode = "";
+      result.forEach( function ( element, index, array) {
+        var block = element.ndxBlock;
+        
+        selectField = 'SELECT * FROM gap.tblFields WHERE ndxBlock = ' + block;
+
+        var code;
+
+        code = element.Category;
+        code = code.concat('_');
+        code = code.concat( element.Name );
+        code = code.concat('_');
+        code = code.concat( element.BlockType );
+        code = code.concat(' = ');
+        code = code.concat( element.BlockType );
+        code = code.concat('_FUNCTION( ');
+
+        database.query( selectField, function ( error, result, row ) {
+          if ( error ) {
+            console.log( error );
+          } else {
+            var stringInputs = "",
+                inputValues = new Array,
+                tuneValues = new Array;
+
+            result.forEach( function ( element, index, array) {
+              if ( element.IOType === 'Input' ){
+                if ( element.Value === null ) {
+                  inputValues.push('0')
+                } else{
+                  inputValues.push( element.Value );
+                }
+              } else{
+                if ( element.IOType === 'Tune' ) {
+                  if ( element.Value === '*FALSE' ) {
+                    tuneValues.push( 0 );
+                  } else {
+                    tuneValues.push( element.Value );
+                  }
+                }
+              }
+            });
+
+            stringInputs = inputValues.join(' , ');
+            if( tuneValues.length != 0 ){
+              stringInputs = stringInputs.concat(' , ');
+              stringInputs = stringInputs.concat(tuneValues.join(' , '));
+            }
+
+            //stringInputs = stringInputs.concat( '\n Aqui acaban los inputs de' + element.ndxBlock );
+            stringInputs = stringInputs.replace(/\56/g,"_");
+
+            code = code.concat( stringInputs );
+            code = code.concat(' );\n');
+            bigCode = bigCode.concat( code );
+            saveText( bigCode, sheet );
+          }
+        });
+      });
+    }
+  });
+}
+
+rl.setPrompt('\nTell me the sheet baby> ');
+rl.prompt();
+
+rl.on('line', function( line ) {
+  createSheet( line );
+  rl.prompt();
+});

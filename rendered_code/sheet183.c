@@ -1,0 +1,16 @@
+HMI_INTER_GEN_DEX_CALC_PLUS = CALC_PLUS_FUNCTION( 0 , 0 , out , DUMMY_IO , DUMMY_BO , NEVADA_XE6807_CALCULATE , metric , 1 , DUMMY_I , HMI_INTER_ENG_SI_B_NAME , SI , if ( SI ) , { out = metric; } , else , { out = metric / 25_4; } );
+HMI_INTER_GEN_DEY_CALC_PLUS = CALC_PLUS_FUNCTION( 0 , 0 , out , DUMMY_IO , DUMMY_BO , NEVADA_XE6808_CALCULATE , metric , 1 , DUMMY_I , HMI_INTER_ENG_SI_B_NAME , SI , if ( SI ) , { out = metric; } , else , { out = metric / 25_4; } );
+HMI_INTER_GEN_NDEX_CALC_PLUS = CALC_PLUS_FUNCTION( if ( SI ) , { out = metric; } , else , { out = metric / 25_4; } , 0 , 0 , out , DUMMY_IO , DUMMY_BO , NEVADA_XE6809_CALCULATE , metric , 1 , DUMMY_I , HMI_INTER_ENG_SI_B_NAME , SI );
+HMI_INTER_GEN_NDEY_CALC_PLUS = CALC_PLUS_FUNCTION( 0 , 0 , out , DUMMY_IO , DUMMY_BO , NEVADA_XE6810_CALCULATE , metric , 1 , DUMMY_I , HMI_INTER_ENG_SI_B_NAME , SI , if ( SI ) , { out = metric; } , else , { out = metric / 25_4; } );
+NEVADA_XE6807_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_5_1 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );
+NEVADA_XE6807_AH_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_3_12 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );
+NEVADA_XE6807_DH_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_3_13 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );
+NEVADA_XE6808_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_5_9 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );
+NEVADA_XE6808_AH_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_3_14 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );
+NEVADA_XE6808_DH_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_3_15 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );
+NEVADA_XE6809_CALCULATE = CALCULATE_FUNCTION( (in/32767)*range , 0 , 0 , NEVADA_COMM_AR_V_5_17 , in , range , *5_0 (0_0, 10_0) );
+NEVADA_XE6809_AH_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_3_16 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );
+NEVADA_XE6809_DH_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_3_17 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );
+NEVADA_XE6810_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_5_25 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );
+NEVADA_XE6810_AH_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_3_18 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );
+NEVADA_XE6810_DH_CALCULATE = CALCULATE_FUNCTION( 0 , 0 , NEVADA_COMM_AR_V_3_19 , in , range , (in/32767)*range , *5_0 (0_0, 10_0) );

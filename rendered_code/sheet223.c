@@ -1,0 +1,12 @@
+HYD_STRT_TAGBSEL_CALC_PLUS = CALC_PLUS_FUNCTION( 0 , 0 , out , DUMMY_IO , DUMMY_BO , HYD_STRT_TE1663RM_A_2_RM , english , 1 , DUMMY_I , HMI_INTER_ENG_SI_B_NAME , SI , if ( SI ) , { out = ( english - 32 ) * 5/9; } , else , { out = english; } );
+HYD_STRT_TE1663A1_A_NAME = A_NAME_FUNCTION( N1N6_RTD_TE1663A1_AI_RTD_L );
+HYD_STRT_TE1663A2_A_NAME = A_NAME_FUNCTION( N1N6_RTD_TE1663A2_AI_RTD_L );
+HYD_STRT_TE1663AL1_B_NAME = B_NAME_FUNCTION( HYD_STRT_TE1663LOG1_B_OUT_1 );
+HYD_STRT_TE1663AL2_B_NAME = B_NAME_FUNCTION( HYD_STRT_TE1663LOG2_B_OUT_1 );
+HYD_STRT_TE1663DM1_B_NAME = B_NAME_FUNCTION( HYD_STRT_TE1663LOG1_B_OUT_2 );
+HYD_STRT_TE1663DM2_B_NAME = B_NAME_FUNCTION( HYD_STRT_TE1663LOG2_B_OUT_2 );
+HYD_STRT_TE1663LOG1_CALC_PLUS = CALC_PLUS_FUNCTION( 0 , 0 , aout1 , iout1 , alarm , shutdown , HYD_STRT_TE1663A1_A_NAME , input , 200_0 , alm_sp , 230_0 , shtdn_sp , 1 , iin_1 , TRUE , enable1 , TRUE , enable2 , if (input > alm_sp && enable1) , { alarm = true; } , else , { alarm = false; } , if (input > shtdn_sp && enable2) , { shutdown = true; } , else , { shutdown = false; } );
+HYD_STRT_TE1663LOG2_CALC_PLUS = CALC_PLUS_FUNCTION( 0 , 0 , aout1 , iout1 , alarm , shutdown , HYD_STRT_TE1663A2_A_NAME , input , 200_0 , alm_sp , 230_0 , shtdn_sp , 1 , iin_1 , TRUE , enable1 , TRUE , enable2 , if (input > alm_sp && enable1) , { alarm = true; } , else , { alarm = false; } , if (input > shtdn_sp && enable2) , { shutdown = true; } , else , { shutdown = false; } );
+HYD_STRT_TE1663RM_A_2_RM = A_2_RM_FUNCTION( 0 , HYD_STRT_TE1663A1_A_NAME , N1N6_RTD_TE1663A1_LATCH_OR , 0 , HYD_STRT_TE1663A2_A_NAME , N1N6_RTD_TE1663A2_LATCH_OR , 0 , 0 , 0 , 10_0 , HYD_STRT_TE1663RM_A_2_RM , 0 , 500_0 , -40_0 , 1200_0 , CORE_DIGITAL_RESET , *TRUE , 0 , 0 );
+HYD_STRT_TE1663SEL_A_NAME = A_NAME_FUNCTION( HYD_STRT_TAGBSEL_A_OUT_1 );
+HYD_STRT_TE1663_DIF_B_NAME = B_NAME_FUNCTION( HYD_STRT_TE1663RM_MAXDIFF_AL );

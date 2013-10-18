@@ -1,0 +1,17 @@
+GLUB_BRNTMPLTCH_LATCH = LATCH_FUNCTION( 0 , GLUB_TEMP_CHCK_SFC_STEP , ALARM_RESET_B_NAME );
+GLUB_TE6021_A_NAME = A_NAME_FUNCTION( N2N4_RTD_TE6021_AI_RTD_L );
+GLUB_TE6021HALM_B_NAME = B_NAME_FUNCTION( GLUB_TE6021LOG_B_OUT_1 );
+GLUB_TE6021LALM_B_NAME = B_NAME_FUNCTION( GLUB_TE6021LO_AND );
+GLUB_TE6021LO_AND = AND_FUNCTION( GLUB_TE6021NOT_NOT , GLUB_BRNTMPLTCH_LATCH );
+GLUB_TE6021LOG_CALC_PLUS = CALC_PLUS_FUNCTION( 0 , 0 , aout1 , iout1 , alarm , shutdown , perm , GLUB_TE6021_A_NAME , input , 197_0 , alm_sp , 203_0 , shtdn_sp , perm_sp , 1 , iin_1 , TRUE , enable1 , TRUE , enable2 , if (input > alm_sp && enable1) , { alarm = true; } , else , { alarm = false; } , if (input > shtdn_sp && enable2) , { shutdown = true; } , else , { shutdown = false; } , if (input > perm_sp && enable1) , { perm = true; } , else , { perm = false; } , *68_0 (10_0, 75_0) );
+GLUB_TE6021NOT_NOT = NOT_FUNCTION( GLUB_TE6021LOG_B_OUT_3 );
+GLUB_TE6021PERM_B_NAME = B_NAME_FUNCTION( GLUB_TE6021LOG_B_OUT_3 );
+GLUB_TE6021SD_B_NAME = B_NAME_FUNCTION( GLUB_TE6021LOG_B_OUT_2 );
+GLUB_TE6023_A_NAME = A_NAME_FUNCTION( N2N4_RTD_TE6023_AI_RTD_L );
+GLUB_TE6023ALM_B_NAME = B_NAME_FUNCTION( GLUB_TE6023LOG_B_OUT_1 );
+GLUB_TE6023LALM_B_NAME = B_NAME_FUNCTION( GLUB_TE6023LO_AND );
+GLUB_TE6023LO_AND = AND_FUNCTION( GLUB_TE6023NOT_NOT , GLUB_BRNTMPLTCH_LATCH );
+GLUB_TE6023LOG_CALC_PLUS = CALC_PLUS_FUNCTION( shtdn_sp , perm_sp , 1 , iin_1 , TRUE , enable1 , TRUE , enable2 , if (input > alm_sp && enable1) , { alarm = true; } , else , { alarm = false; } , if (input > shtdn_sp && enable2) , { shutdown = true; } , else , { shutdown = false; } , if (input > perm_sp && enable1) , { perm = true; } , else , { perm = false; } , 0 , 0 , aout1 , iout1 , alarm , shutdown , perm , GLUB_TE6023_A_NAME , input , 197_0 , alm_sp , 203_0 , *68_0 (10_0, 75_0) );
+GLUB_TE6023NOT_NOT = NOT_FUNCTION( GLUB_TE6023LOG_B_OUT_3 );
+GLUB_TE6023PERM_B_NAME = B_NAME_FUNCTION( GLUB_TE6023LOG_B_OUT_3 );
+GLUB_TE6023SD_B_NAME = B_NAME_FUNCTION( GLUB_TE6023LOG_B_OUT_2 );
