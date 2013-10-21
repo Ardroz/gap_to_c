@@ -115,13 +115,12 @@ function createSheet ( sheet ) {
                 BlockType: element.BlockType
               }
               outputValues.forEach( function ( element, index, array ) {
-                stringInputs = element.concat(' , ').concat( stringInputs );
-                console.log( stringInputs );
+                var inputs =  ('"').concat(element).concat('" , ').concat( stringInputs );
                 code = lol.concat( parameter.BlockType );
                 code = code.concat(' = ');
                 code = code.concat( parameter.BlockType );
                 code = code.concat('_FUNCTION( ');
-                code = code.concat( stringInputs );
+                code = code.concat( inputs );
                 code = code.concat(' );\n');
                 bigCode = bigCode.concat( code );
                 saveText( bigCode, sheet );
