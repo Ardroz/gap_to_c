@@ -111,12 +111,16 @@ function createSheet ( sheet ) {
               saveText( bigCode, sheet );
             } else{
               var lol = code;
+              var parameter = {
+                BlockType: element.BlockType
+              }
               outputValues.forEach( function ( element, index, array ) {
-                code = lol.concat( element );
+                var inputs =  ('"').concat(element).concat('" , ').concat( stringInputs );
+                code = lol.concat( parameter.BlockType );
                 code = code.concat(' = ');
-                code = code.concat( element );
+                code = code.concat( parameter.BlockType );
                 code = code.concat('_FUNCTION( ');
-                code = code.concat( stringInputs );
+                code = code.concat( inputs );
                 code = code.concat(' );\n');
                 bigCode = bigCode.concat( code );
                 saveText( bigCode, sheet );
