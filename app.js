@@ -1,7 +1,6 @@
 /*
  * Module dependencies.
  */
-
 var fs      = require('fs-extra'),
     mysql   = require('mysql'),
     readline = require('readline'),
@@ -23,10 +22,8 @@ function databaseInstance(){
 
 function saveText ( text, sheet ){
   var projectPath = './rendered_code';
-
   fs.exists( projectPath , function ( exists ){
     fs.mkdirsSync( projectPath );
-
     fs.writeFile( projectPath + '/sheet' + sheet + '.c', text , function (err) {
       if (err) throw err;
       console.log( 'Creado ' + projectPath + '/sheet' + sheet + '.c');
@@ -46,86 +43,22 @@ function createSheet ( sheet ) {
     } else {
       var bigCode = "";
       result.forEach( function ( element, index, array) {
+        
         var block = element.ndxBlock;
         
         selectField = 'SELECT * FROM gap.tblFields WHERE ndxBlock = ' + block;
-
         var code;
-
-        code = element.Category;
-        code = code.concat('_');
-        code = code.concat( element.Name );
-        code = code.concat('_');
+        ///creación objeto con un parametro que contiene un objeto por cada bloque de una misma hoja
+        var switchParameters = {
+          block: element
+        }
 
         database.query( selectField, function ( error, result, row ) {
           if ( error ) {
             console.log( error );
           } else {
-            var stringInputs = "",
-                inputValues = new Array,
-                tuneValues = new Array,
-                outputValues = new Array;
-
-            result.forEach( function ( element, index, array) {
-              if ( element.IOType === 'Input' ){
-                if ( element.Value === null ) {
-                  inputValues.push('0')
-                } else{
-                  inputValues.push( element.Value );
-                }
-              } else{
-                if ( element.IOType === 'Tune' ) {
-                  if ( element.Value === '*FALSE' ) {
-                    tuneValues.push( 0 );
-                  } else {
-                    tuneValues.push( element.Value );
-                  }
-                } else {
-                  if ( element.IOType === 'Output' ) {
-                    if ( element.Value != null ) {
-                      outputValues.push( element.Value );
-                    } else {
-                      outputValues.push( element.FieldName );
-                    }
-                  }
-                }
-              }
-            });
-
-            stringInputs = inputValues.join(' , ');
-            if( tuneValues.length != 0 ){
-              stringInputs = stringInputs.concat(' , ');
-              stringInputs = stringInputs.concat(tuneValues.join(' , '));
-            }
-
-            //stringInputs = stringInputs.concat( '\n Aqui acaban los inputs de' + element.ndxBlock );
-            stringInputs = stringInputs.replace(/\56/g,"_");
-            if ( outputValues.length < 2 ) {
-              code = code.concat( element.BlockType );
-              code = code.concat(' = ');
-              code = code.concat( element.BlockType );
-              code = code.concat('_FUNCTION( ');
-              code = code.concat( stringInputs );
-              code = code.concat(' );\n');
-              bigCode = bigCode.concat( code );
-              saveText( bigCode, sheet );
-            } else{
-              var lol = code;
-              var parameter = {
-                BlockType: element.BlockType
-              }
-              outputValues.forEach( function ( element, index, array ) {
-                var inputs =  ('"').concat(element).concat('" , ').concat( stringInputs );
-                code = lol.concat( parameter.BlockType );
-                code = code.concat(' = ');
-                code = code.concat( parameter.BlockType );
-                code = code.concat('_FUNCTION( ');
-                code = code.concat( inputs );
-                code = code.concat(' );\n');
-                bigCode = bigCode.concat( code );
-                saveText( bigCode, sheet );
-              });
-            }
+            switchParameters.fields = result;
+            blockSwitch( switchParameters );
           }
         });
       });
@@ -135,8 +68,59 @@ function createSheet ( sheet ) {
 
 rl.setPrompt('\nTell me the sheet baby> ');
 rl.prompt();
-
 rl.on('line', function( line ) {
   createSheet( line );
   rl.prompt();
 });
+
+function blockSwitch ( parameters ) {
+  var bigCode,
+      code,
+      stringInputs = "",
+      inputValues = new Array,
+      outputValues = new Array,
+      tuneValues = new Array;
+
+  code = parameters.block.Category.concat('_');
+  code = code.concat( parameters.block.Name ).concat('_');
+
+  switch ( parameters.block.BlockType ){
+    case "MODBUS_M":
+    case "MODBUS_S":
+      console.log("Es un modbus");
+      break;
+    default:
+      parameters.fields.forEach( function ( element, index, array ) {
+        if ( element.IOType === 'Input' ){
+          if ( element.Value === null ) {
+            inputValues.push('0')
+          } else{
+            inputValues.push( element.Value );
+          }
+        } else{
+          if ( element.IOType === 'Tune' ) {
+            if ( element.Value === '*FALSE' ) {
+              tuneValues.push( 0 );
+            } else {
+              tuneValues.push( element.Value );
+            }
+          } else {
+            if ( element.IOType === 'Output' ) {
+              if ( element.Value != null ) {
+                outputValues.push( element.Value );
+              } else {
+                outputValues.push( element.FieldName );
+              }
+            }
+          }
+        }
+      });
+      console.log(code);
+      console.log(inputValues);
+      console.log(outputValues);
+      console.log(tuneValues);
+
+      break;
+  }
+  return bigCode;
+}
