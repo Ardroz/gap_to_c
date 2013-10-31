@@ -44,8 +44,7 @@ function createSheet ( sheet ) {
       var bigCode = "";
       result.forEach( function ( element, index, array) {
         
-        var block = element.ndxBlock;
-        
+        var block = element.ndxBlock;        
         selectField = 'SELECT * FROM gap.tblFields WHERE ndxBlock = ' + block;
         var code;
         ///creación objeto con un parametro que contiene un objeto por cada bloque de una misma hoja
@@ -58,7 +57,8 @@ function createSheet ( sheet ) {
             console.log( error );
           } else {
             switchParameters.fields = result;
-            blockSwitch( switchParameters );
+            bigCode = blockSwitch( switchParameters );
+            console.log(bigCode);
           }
         });
       });
@@ -85,10 +85,12 @@ function blockSwitch ( parameters ) {
   code = code.concat( parameters.block.Name ).concat('_');
 
   switch ( parameters.block.BlockType ){
+
     case "MODBUS_M":
     case "MODBUS_S":
       console.log("Es un modbus");
       break;
+
     default:
       parameters.fields.forEach( function ( element, index, array ) {
         if ( element.IOType === 'Input' ){
@@ -99,11 +101,10 @@ function blockSwitch ( parameters ) {
           }
         } else{
           if ( element.IOType === 'Tune' ) {
-            if ( element.Value === '*FALSE' ) {
-              tuneValues.push( 0 );
-            } else {
-              tuneValues.push( element.Value );
-            }
+            //if ( element.Value === '*FALSE' ) {
+            // tuneValues.push( 0 );
+            //} else {
+            tuneValues.push( element.Value );
           } else {
             if ( element.IOType === 'Output' ) {
               if ( element.Value != null ) {
@@ -114,13 +115,51 @@ function blockSwitch ( parameters ) {
             }
           }
         }
+        //stringInputs se compone por los inputs
+        stringInputs = inputValues.join(' , ');
       });
-      console.log(code);
-      console.log(inputValues);
-      console.log(outputValues);
-      console.log(tuneValues);
-
-      break;
+    break;
   }
+
+    /////////Inputs separados por comas con todos los argumento sin tunes
+  stringInputs = stringInputs.replace(/\56/g,"_");
+  if( tuneValues != 0 ){
+    stringInputs = stringInputs.concat(' , ');
+    stringInputs = stringInputs.concat( tuneValues.join(' ,') );
+  }
+  
+  ///en stringInputs estan todos los argumentos
+  console.log("Argumentos" + stringInputs);
+
+  //configuración de salidas
+  if ( outputValues.length < 2 ) {            //salida unica
+    code = code.concat( parameter.fields.FieldName ); // tengo duda
+    code = code.concat(' = ');
+    code = code.concat( parameter.block.BlockType );
+    code = code.concat('_FUNCTION( ');
+    code = code.concat( stringInputs );
+    code = code.concat(' );\n');
+    bigCode = bigCode.concat( code );
+              
+  } else{                              //multiples salidas
+    var lol = code;
+    outputValues.forEach( function ( element, index, array ) {
+
+    stringInputs = '"'.concat(element).concat( '",').concat( stringInputs );
+
+    code = lol.concat( parameter.fields.FieldName ); // tengo duda
+    code = code.concat(' = ');
+    code = code.concat( parameter.BlockType );
+    code = code.concat('_FUNCTION( ');
+    code = code.concat( stringInputs );
+    code = code.concat(' );\n');
+    bigCode = bigCode.concat( code );
+    
+    });
+  }
+          
+
+
+
   return bigCode;
 }
