@@ -47,7 +47,7 @@ function createSheet ( sheet ) {
         var block = element.ndxBlock;        
         selectField = 'SELECT * FROM gap.tblFields WHERE ndxBlock = ' + block;
         var code;
-        //Creación objeto con un parametro que contiene un objeto por cada bloque de una misma hoja
+        ///creación objeto con un parametro que contiene un objeto por cada bloque de una misma hoja
         var switchParameters = {
           block: element
         }
@@ -66,7 +66,7 @@ function createSheet ( sheet ) {
   });
 }
 
-rl.setPrompt('\nTell me the sheet baby> \n');
+rl.setPrompt('\nTell me the sheet baby> ');
 rl.prompt();
 rl.on('line', function( line ) {
   createSheet( line );
@@ -106,11 +106,9 @@ function blockSwitch ( parameters ) {
           }
         } else{
           if ( element.IOType === 'Tune' ) {
-            /*
-            if ( element.Value === '*FALSE' ) {
-             tuneValues.push( 0 );
-            } else { 
-            */
+            //if ( element.Value === '*FALSE' ) {
+            // tuneValues.push( 0 );
+            //} else {
             tuneValues.push( element.Value );
           } else {
             if ( element.IOType === 'Output' ) {
@@ -128,35 +126,46 @@ function blockSwitch ( parameters ) {
     break;
   }
 
-  //Inputs separados por comas con todos los argumento sin tunes
+    /////////Inputs separados por comas con todos los argumento sin tunes
   stringInputs = stringInputs.replace(/\56/g,"_");
   if( tuneValues.length != 0 ){
     stringInputs = stringInputs.concat(' , ');
     stringInputs = stringInputs.concat( tuneValues.join(' ,') );
   }
   
-  //en stringInputs estan todos los argumentos
+  ///en stringInputs estan todos los argumentos
   console.log("Argumentos" + stringInputs);
 
   //configuración de salidas
   if ( outputValues.length < 2 ) {            //salida unica
-    code = finalConcatenation( code, stringInputs, null );
+    code = code.concat( parameter.fields.FieldName ); // tengo duda
+    code = code.concat(' = ');
+    code = code.concat( parameter.block.BlockType );
+    code = code.concat('_FUNCTION( ');
+    code = code.concat( stringInputs );
+    code = code.concat(' );\n');
     bigCode = bigCode.concat( code );
-
-  } else{ 
-    //Para multiples salidas
+              
+  } else{                              //multiples salidas
     var lol = code;
     outputValues.forEach( function ( element, index, array ) {
 
-      code = finalConcatenation( lol, stringInputs, element );
+      var inputs =  ('"').concat( element ).concat('" , ').concat( stringInputs );
+      code = lol.concat( parameter.fields.FieldName ); // tengo duda
+      code = code.concat(' = ');
+      code = code.concat( parameter.BlockType );
+      code = code.concat('_FUNCTION( ');
+      code = code.concat( inputs );
+      code = code.concat(' );\n');
       bigCode = bigCode.concat( code );
+    
     });
   }
 
   return bigCode;
 }
 
-function finalConcatenation ( code, stringInputs, element ) {
+function lol ( code, stringInputs, element ) {
 
   code = code.concat( parameter.fields.FieldName ); // tengo duda
   code = code.concat(' = ');
