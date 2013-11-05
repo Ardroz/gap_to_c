@@ -48,6 +48,7 @@ function createSheet ( sheet ) {
         selectField = 'SELECT * FROM gap.tblFields WHERE ndxBlock = ' + block;
         var code;
         //Creación objeto con un parametro que contiene un objeto por cada bloque de una misma hoja
+        //console.log(element);
         var switchParameters = {
           block: element
         }
@@ -57,8 +58,8 @@ function createSheet ( sheet ) {
             console.log( error );
           } else {
             switchParameters.fields = result;
-            bigCode = blockSwitch( switchParameters );
-            console.log(bigCode);
+            bigCode = bigCode.concat(blockSwitch( switchParameters ));
+            saveText( bigCode, sheet );
           }
         });
       });
@@ -74,7 +75,7 @@ rl.on('line', function( line ) {
 });
 
 function blockSwitch ( parameters ) {
-  var bigCode,
+  var bigCode = "",
       code,
       stringInputs = "",
       inputValues = new Array,
@@ -136,19 +137,18 @@ function blockSwitch ( parameters ) {
   }
   
   //en stringInputs estan todos los argumentos
-  console.log("Argumentos" + stringInputs);
+  //console.log("Argumentos" + stringInputs);
 
   //configuración de salidas
   if ( outputValues.length < 2 ) {            //salida unica
-    code = finalConcatenation( code, stringInputs, null );
+    code = finalConcatenation( parameters, code, stringInputs, null );
     bigCode = bigCode.concat( code );
 
   } else{ 
     //Para multiples salidas
     var lol = code;
     outputValues.forEach( function ( element, index, array ) {
-
-      code = finalConcatenation( lol, stringInputs, element );
+      code = finalConcatenation( parameters, lol, stringInputs, element );
       bigCode = bigCode.concat( code );
     });
   }
@@ -156,11 +156,10 @@ function blockSwitch ( parameters ) {
   return bigCode;
 }
 
-function finalConcatenation ( code, stringInputs, element ) {
-
-  code = code.concat( parameter.fields.FieldName ); // tengo duda
+function finalConcatenation ( parameters, code, stringInputs, element ) {
+  code = code.concat( element ); // tengo duda
   code = code.concat(' = ');
-  code = code.concat( parameter.block.BlockType );
+  code = code.concat( parameters.block.BlockType );
   code = code.concat('_FUNCTION( ');
 
   if ( element != null) {
