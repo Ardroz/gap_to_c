@@ -76,7 +76,7 @@ rl.on('line', function( line ) {
 
 function blockSwitch ( parameters ) {
   var bigCode = "",
-      code,
+      code = "",
       stringInputs = "",
       inputValues = new Array,
       outputValues = new Array,
@@ -97,13 +97,13 @@ function blockSwitch ( parameters ) {
         }
       });
       
-      stringInputs = inputValues.join(' & ');
+      stringInputs = inputValues.join(' && ');
       stringInputs = stringInputs.replace(/\56/g,"_");
 
       code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_');
       code = code.concat( 'AND = ' );
-      code = code.concat( stringInputs ).concat( ';' );
+      code = code.concat( stringInputs ).concat( ';\n' );
 
       return code;
       break;
@@ -116,13 +116,13 @@ function blockSwitch ( parameters ) {
         }
       });
 
-      stringInputs = inputValues.join(' & ');
+      stringInputs = inputValues.join(' || ');
       stringInputs = stringInputs.replace(/\56/g,"_");
 
       code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_');
       code = code.concat( 'OR = ' );
-      code = code.concat( stringInputs ).concat( ';' );
+      code = code.concat( stringInputs ).concat( ';\n' );
 
       return code;
 
@@ -183,7 +183,6 @@ function blockSwitch ( parameters ) {
 
   } else{ 
     //Para multiples salidas
-    var lol = code;
     code = code.concat( parameters.block.BlockType );
     code = code.concat('_FUNCTION(');
     code = code.concat( stringInputs );
@@ -193,7 +192,7 @@ function blockSwitch ( parameters ) {
       code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_');
       code = code.concat( element ).concat(' = ')
-      code = code.concat( "output" ).concat( index+1 );
+      code = code.concat( "output" ).concat( index + 1 );
       code = code.concat(';\n');
       bigCode = bigCode.concat( code );
     });
@@ -202,3 +201,6 @@ function blockSwitch ( parameters ) {
   return bigCode;
 }
 
+/*String.prototype.isNumber = function(){return /^\d$/.test(this);}
+console.log("123123".isNumber()); // outputs true
+console.log("+12".isNumber()); // outputs false*/
