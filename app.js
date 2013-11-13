@@ -82,10 +82,7 @@ function blockSwitch ( parameters ) {
       outputValues = new Array,
       tuneValues = new Array;
 
-  code = parameters.block.Category.concat('_');
-  code = code.concat( parameters.block.Name ).concat('_');
-
-  switch ( parameters.block.BlockType ){
+    switch ( parameters.block.BlockType ){
 
     case "MODBUS_M":
     case "MODBUS_S":
@@ -99,10 +96,12 @@ function blockSwitch ( parameters ) {
           inputValues.push ( element.Value );
         }
       });
-
+      
       stringInputs = inputValues.join(' & ');
       stringInputs = stringInputs.replace(/\56/g,"_");
 
+      code = parameters.block.Category.concat('_');
+      code = code.concat( parameters.block.Name ).concat('_');
       code = code.concat( 'AND = ' );
       code = code.concat( stringInputs ).concat( ';' );
 
@@ -120,6 +119,8 @@ function blockSwitch ( parameters ) {
       stringInputs = inputValues.join(' & ');
       stringInputs = stringInputs.replace(/\56/g,"_");
 
+      code = parameters.block.Category.concat('_');
+      code = code.concat( parameters.block.Name ).concat('_');
       code = code.concat( 'OR = ' );
       code = code.concat( stringInputs ).concat( ';' );
 
@@ -170,15 +171,30 @@ function blockSwitch ( parameters ) {
   //console.log("Argumentos" + stringInputs);
 
   //configuración de salidas
-  if ( outputValues.length < 2 ) {            //salida unica
-    code = finalConcatenation( parameters, code, stringInputs, null );
+  if ( outputValues.length == 1 ) {            //salida unica
+    code = parameters.block.Category.concat('_');
+    code = code.concat( parameters.block.Name ).concat('_');
+    code = code.concat( outputValues[0]).concat(' = ')
+    code = code.concat( parameters.block.BlockType );
+    code = code.concat('_FUNCTION( ');
+    code = code.concat( stringInputs );
+    code = code.concat(' );\n');
     bigCode = bigCode.concat( code );
 
   } else{ 
     //Para multiples salidas
     var lol = code;
+    code = code.concat( parameters.block.BlockType );
+    code = code.concat('_FUNCTION(');
+    code = code.concat( stringInputs );
+    code = code.concat( ');\n');
+    bigCode = bigCode.concat( code );
     outputValues.forEach( function ( element, index, array ) {
-      code = finalConcatenation( parameters, lol, stringInputs, element );
+      code = parameters.block.Category.concat('_');
+      code = code.concat( parameters.block.Name ).concat('_');
+      code = code.concat( element ).concat(' = ')
+      code = code.concat( "output" ).concat( index+1 );
+      code = code.concat(';\n');
       bigCode = bigCode.concat( code );
     });
   }
@@ -186,19 +202,3 @@ function blockSwitch ( parameters ) {
   return bigCode;
 }
 
-function finalConcatenation ( parameters, code, stringInputs, element ) {
-  code = code.concat( element ); // tengo duda
-  code = code.concat(' = ');
-  code = code.concat( parameters.block.BlockType );
-  code = code.concat('_FUNCTION( ');
-
-  if ( element != null) {
-    var inputs =  ('"').concat( element ).concat('" , ').concat( stringInputs );
-    code = code.concat( inputs );
-  } else{
-    code = code.concat( stringInputs );
-  }
-  code = code.concat(' );\n');
-
-  return code;
-}
