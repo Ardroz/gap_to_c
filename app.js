@@ -94,8 +94,38 @@ function blockSwitch ( parameters ) {
 
     case "AND":
 
-      return bigCode;
+      parameters.fields.forEach( function ( element, index, array ){
+        if ( element.IOType === 'Input'){
+          inputValues.push ( element.Value );
+        }
+      });
+
+      stringInputs = inputValues.join(' & ');
+      stringInputs = stringInputs.replace(/\56/g,"_");
+
+      code = code.concat( 'AND = ' );
+      code = code.concat( stringInputs ).concat( ';' );
+
+      return code;
       break;
+
+    case "OR":
+
+      parameters.fields.forEach( function ( element, index, array ){
+        if ( element.IOType === 'Input'){
+          inputValues.push ( element.Value );
+        }
+      });
+
+      stringInputs = inputValues.join(' & ');
+      stringInputs = stringInputs.replace(/\56/g,"_");
+
+      code = code.concat( 'OR = ' );
+      code = code.concat( stringInputs ).concat( ';' );
+
+      return code;
+
+    break;
 
     default:
       parameters.fields.forEach( function ( element, index, array ) {

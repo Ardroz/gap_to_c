@@ -1,0 +1,84 @@
+[33mcommit 8430872eacf3915515dec1656626034c45e45113[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Mon Nov 4 23:14:56 2013 -0600
+
+    minor fixes for switch
+
+[33mcommit d907849f95808c103512c9da91ffc0a15e051ebe[m
+Author: luricardorod <luricardorod@gmail.com>
+Date:   Fri Nov 1 00:17:52 2013 -0600
+
+    Multiple outputs function in switch
+
+[33mcommit 16c661ca89173c26dc58cfb448fb80c978924d2a[m
+Author: luricardorod <luricardorod@gmail.com>
+Date:   Thu Oct 31 17:57:18 2013 -0600
+
+    default_case
+
+[33mcommit 1f0e68571d601a671ef9ff19f8e1db5fd0f049e1[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Thu Oct 31 00:39:17 2013 -0600
+
+    Switch funcionando
+
+[33mcommit 7fd197c8d7347b97d8373287f96358544f0df1d0[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Wed Oct 30 23:44:36 2013 -0600
+
+    Necesary commit
+
+[33mcommit 2a6062a7c401e653a478abdbadb39a790461b171[m
+Merge: 2a60de1 43c93f3
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Mon Oct 21 13:35:06 2013 -0500
+
+    Merge branch 'multipleOutputs'
+
+[33mcommit 2a60de1f68a956b5a6cfb4489ffaf0e023f953fc[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Mon Oct 21 13:34:22 2013 -0500
+
+    Necesary
+
+[33mcommit 43c93f31baf48ba25f759d3badb5e0260ac9dcc4[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Mon Oct 21 13:28:49 2013 -0500
+
+    outputs in ""
+
+[33mcommit 8ea21e0722cd130dbe9ed52699d396567d41b6b3[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Sun Oct 20 10:16:30 2013 -0500
+
+    line per output
+
+[33mcommit 2682f1c42d8ec0567f75cb251cd464fef77325ea[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Fri Oct 18 00:16:25 2013 -0500
+
+    Rendered code update we lost against 175,177,298,299
+
+[33mcommit df11dcf088d2c4af6eb2f7128df03d8c19b9ac58[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Thu Oct 17 23:41:46 2013 -0500
+
+    everything is done
+
+[33mcommit 3da0e15a6da9eb7af502549005b174e966531239[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Thu Oct 17 21:22:17 2013 -0500
+
+    First satable version
+
+[33mcommit 23880cdb865ddd6529b4d284a417ebce48d9274a[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Thu Oct 17 15:46:13 2013 -0500
+
+    Creacion of 1 block done
+
+[33mcommit 11b376c9b015f8eccfe8bf2d30c535b1116fa959[m
+Author: Daniel Arturo Rodriguez Rosas <darr.0725@gmail.com>
+Date:   Wed Oct 16 21:22:54 2013 -0700
+
+    Initial commit
