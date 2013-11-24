@@ -269,7 +269,11 @@ function blockSwitch ( parameters ) {
           if ( element.Value === null ) {
             inputValues.push('0')
           } else{
-            inputValues.push( element.Value );
+            if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( element.Value.replace(/\56/g,"_") );
+            }else{
+              inputValues.push( element.Value );
+            }
           }
         } else{
           if ( element.IOType === 'Tune' ) {
@@ -296,7 +300,7 @@ function blockSwitch ( parameters ) {
   }
 
   //Inputs separados por comas con todos los argumento sin tunes
-  stringInputs = stringInputs.replace(/\56/g,"_");
+  //(stringInputs = stringInputs.replace(/\56/g,"_");
   if( tuneValues.length != 0 ){
     stringInputs = stringInputs.concat(' , ');
     stringInputs = stringInputs.concat( tuneValues.join(' ,') );
