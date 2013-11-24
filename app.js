@@ -85,8 +85,143 @@ function blockSwitch ( parameters ) {
     switch ( parameters.block.BlockType ){
 
     case "MODBUS_M":
+      code = "// Modbus_M";
+      return code;
+      break;
+
     case "MODBUS_S":
-      console.log("Es un modbus");
+      code = "// Modbus_S";
+      return code;
+      break;
+
+    case "AI_420_6CH":
+      code = "// AI_420_6CH";
+      return code;
+      break;
+
+    case "AI_PRES_P1":
+      code = "// AI_PRES_P1";
+      return code;
+      break;
+
+    case "AI_PRES_P2":
+      code = "// AI_PRES_P2";
+      return code;
+      break;
+
+    case "AI_PRESS8":
+      code = "// AI_PRESS8";
+      return code;
+      break;
+
+    case "AI_RTD_6CH":
+      code = "// AI_RTD_6CH";
+      return code;
+      break;
+
+    case "EGD_CON":
+      code = "// EGD_CON";
+      return code;
+      break;
+
+    case "ExternLink":
+      code = "// ExternLink";
+      return code;
+      break;
+
+    case "INTERFACE":
+      code = "// INTERFACE";
+      return code;
+      break;
+
+    case "LON_FLT":
+      code = "// LON_FLT";
+      return code;
+      break;
+
+    case "LON_GROUP":
+      code = "// LON_GROUP";
+      return code;
+      break;
+
+    case "LON_MOD":
+      code = "// LON_MOD";
+      return code;
+      break;
+
+    case "MEXPCHAS12":
+      code = "// MEXPCHAS12";
+      return code;
+      break;
+
+    case "MICRONET12":
+      code = "// MICRONET12";
+      return code;
+      break;
+
+    case "MOD_PORT":
+      code = "// MOD_PORT";
+      return code;
+      break;
+
+    case "NODE_FLT":
+      code = "// NODE_FLT";
+      return code;
+      break;
+
+    case "NT_CPU":
+      code = "// NT_CPU";
+      return code;
+      break;
+
+    case "NV_LOG":
+      code = "// NV_LOG";
+      return code;
+      break;
+
+    case "PIPE_P":
+      code = "// PIPE_P";
+      return code;
+      break;
+
+    case "RTC":
+      code = "// RTC";
+      return code;
+      break;
+
+    case "SIO":
+      code = "// SIO";
+      return code;
+      break;
+
+    case "SIO_PORT":
+      code = "// SIO_PORT";
+      return code;
+      break;
+
+    case "SIO232PORT":
+      code = "// SIO232PORT";
+      return code;
+      break;
+
+    case "SYS_INFO":
+      code = "// SYS_INFO";
+      return code;
+      break;
+
+    case "TCP_P":
+      code = "// TCP_P";
+      return code;
+      break;
+
+    case "TUNE_VAR":
+      code = "// TUNE_VAR";
+      return code;
+      break;
+
+    case "UDP_P":
+      code = "// UDP_P";
+      return code;
       break;
 
     case "AND":
@@ -126,7 +261,7 @@ function blockSwitch ( parameters ) {
 
       return code;
 
-    break;
+      break;
 
     default:
       parameters.fields.forEach( function ( element, index, array ) {
