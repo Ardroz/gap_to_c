@@ -14,7 +14,7 @@ var rl = readline.createInterface({
 function databaseInstance(){
   var connection = mysql.createConnection({
     host     : 'localhost',
-    password : 'n0m3l0',
+    password : '',//n0m3l0
     user     : 'root'
   });
   return connection;
@@ -85,142 +85,142 @@ function blockSwitch ( parameters ) {
     switch ( parameters.block.BlockType ){
 
     case "MODBUS_M":
-      code = "// Modbus_M";
+      code = "// Modbus_M \n ";
       return code;
       break;
 
     case "MODBUS_S":
-      code = "// Modbus_S";
+      code = "// Modbus_S \n ";
       return code;
       break;
 
     case "AI_420_6CH":
-      code = "// AI_420_6CH";
+      code = "// AI_420_6CH \n ";
       return code;
       break;
 
     case "AI_PRES_P1":
-      code = "// AI_PRES_P1";
+      code = "// AI_PRES_P1 \n ";
       return code;
       break;
 
     case "AI_PRES_P2":
-      code = "// AI_PRES_P2";
+      code = "// AI_PRES_P2 \n ";
       return code;
       break;
 
     case "AI_PRESS8":
-      code = "// AI_PRESS8";
+      code = "// AI_PRESS8 \n ";
       return code;
       break;
 
     case "AI_RTD_6CH":
-      code = "// AI_RTD_6CH";
+      code = "// AI_RTD_6CH \n ";
       return code;
       break;
 
     case "EGD_CON":
-      code = "// EGD_CON";
+      code = "// EGD_CON \n ";
       return code;
       break;
 
     case "ExternLink":
-      code = "// ExternLink";
+      code = "// ExternLink \n ";
       return code;
       break;
 
     case "INTERFACE":
-      code = "// INTERFACE";
+      code = "// INTERFACE \n ";
       return code;
       break;
 
     case "LON_FLT":
-      code = "// LON_FLT";
+      code = "// LON_FLT \n ";
       return code;
       break;
 
     case "LON_GROUP":
-      code = "// LON_GROUP";
+      code = "// LON_GROUP \n ";
       return code;
       break;
 
     case "LON_MOD":
-      code = "// LON_MOD";
+      code = "// LON_MOD \n ";
       return code;
       break;
 
     case "MEXPCHAS12":
-      code = "// MEXPCHAS12";
+      code = "// MEXPCHAS12 \n ";
       return code;
       break;
 
     case "MICRONET12":
-      code = "// MICRONET12";
+      code = "// MICRONET12 \n ";
       return code;
       break;
 
     case "MOD_PORT":
-      code = "// MOD_PORT";
+      code = "// MOD_PORT \n ";
       return code;
       break;
 
     case "NODE_FLT":
-      code = "// NODE_FLT";
+      code = "// NODE_FLT \n ";
       return code;
       break;
 
     case "NT_CPU":
-      code = "// NT_CPU";
+      code = "// NT_CPU \n ";
       return code;
       break;
 
     case "NV_LOG":
-      code = "// NV_LOG";
+      code = "// NV_LOG \n ";
       return code;
       break;
 
     case "PIPE_P":
-      code = "// PIPE_P";
+      code = "// PIPE_P \n ";
       return code;
       break;
 
     case "RTC":
-      code = "// RTC";
+      code = "// RTC \n ";
       return code;
       break;
 
     case "SIO":
-      code = "// SIO";
+      code = "// SIO \n ";
       return code;
       break;
 
     case "SIO_PORT":
-      code = "// SIO_PORT";
+      code = "// SIO_PORT \n ";
       return code;
       break;
 
     case "SIO232PORT":
-      code = "// SIO232PORT";
+      code = "// SIO232PORT \n ";
       return code;
       break;
 
     case "SYS_INFO":
-      code = "// SYS_INFO";
+      code = "// SYS_INFO \n ";
       return code;
       break;
 
     case "TCP_P":
-      code = "// TCP_P";
+      code = "// TCP_P \n ";
       return code;
       break;
 
     case "TUNE_VAR":
-      code = "// TUNE_VAR";
+      code = "// TUNE_VAR \n ";
       return code;
       break;
 
     case "UDP_P":
-      code = "// UDP_P";
+      code = "// UDP_P \n ";
       return code;
       break;
 

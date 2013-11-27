@@ -1,1 +1,0 @@
-ExternLink_FUNCTION();
