@@ -225,6 +225,7 @@ function blockSwitch ( parameters ) {
       break;
 
     case "AND":
+    case "NAND":
 
       parameters.fields.forEach( function ( element, index, array ){
         if ( element.IOType === 'Input'){
@@ -237,13 +238,18 @@ function blockSwitch ( parameters ) {
 
       code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_');
-      code = code.concat( 'AND = ' );
+      if ( parameters.block.BlockType == "AND") {
+        code = code.concat( 'AND = ' );
+      } else {
+        code =code.concat( 'NAND =! ')
+      }
       code = code.concat( stringInputs ).concat( ';\n' );
 
       return code;
       break;
 
     case "OR":
+    case "NOR":
 
       parameters.fields.forEach( function ( element, index, array ){
         if ( element.IOType === 'Input'){
@@ -256,7 +262,63 @@ function blockSwitch ( parameters ) {
 
       code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_');
-      code = code.concat( 'OR = ' );
+      if ( parameters.block.BlockType == "OR" ) {
+        code = code.concat( 'OR = ' );
+      } else {
+        code =code.concat( 'NOR =! ')
+      }
+      code = code.concat( stringInputs ).concat( ';\n' );
+
+      return code;
+
+      break;
+
+    case "DIVIDE":
+
+      parameters.fields.forEach( function ( element, index, array ){
+        if ( element.IOType === 'Input'){
+          if( element.FieldName === 'B_ENABLE'){   //REVISAR funcuion negada
+          } else {
+            if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( element.Value.replace(/\56/g,"_") );
+            }else{
+              inputValues.push( element.Value );
+            }
+          }
+        }
+      });
+
+      stringInputs = inputValues.join(' / ');
+      code = parameters.block.Category.concat('_');
+      code = code.concat( parameters.block.Name ).concat('_DIVIDE = ');
+      code = code.concat( stringInputs ).concat( ';\n' );
+
+      return code;
+
+      break;
+
+    case "A_NAME":
+    case "B_NAME":
+    case "I_NAME":
+    case "T_NAME":
+
+      parameters.fields.forEach( function ( element, index, array ){
+        if ( element.IOType === 'Input' || element.IOType === 'Tune' ){
+
+          if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( element.Value.replace(/\56/g,"_") );
+          }else{
+              inputValues.push( element.Value );
+          }
+        }
+      });
+
+      stringInputs = inputValues;
+      
+      code = parameters.block.Category.concat('_');
+      code = code.concat( parameters.block.Name ).concat('_');
+      code = code.concat( parameters.block.BlockType ).concat(' = ');
+      
       code = code.concat( stringInputs ).concat( ';\n' );
 
       return code;
