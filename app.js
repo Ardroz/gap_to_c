@@ -80,147 +80,42 @@ function blockSwitch ( parameters ) {
       stringInputs = "",
       inputValues = new Array,
       outputValues = new Array,
-      tuneValues = new Array;
+      tuneValues = new Array,
+      lol = {};
 
-    switch ( parameters.block.BlockType ){
-
-    case "MODBUS_M":
-      code = "// Modbus_M \n ";
-      return code;
-      break;
-
-    case "MODBUS_S":
-      code = "// Modbus_S \n ";
-      return code;
-      break;
+  switch ( parameters.block.BlockType ) {
 
     case "AI_420_6CH":
-      code = "// AI_420_6CH \n ";
-      return code;
-      break;
-
     case "AI_PRES_P1":
-      code = "// AI_PRES_P1 \n ";
-      return code;
-      break;
-
     case "AI_PRES_P2":
-      code = "// AI_PRES_P2 \n ";
-      return code;
-      break;
-
     case "AI_PRESS8":
-      code = "// AI_PRESS8 \n ";
-      return code;
-      break;
-
     case "AI_RTD_6CH":
-      code = "// AI_RTD_6CH \n ";
-      return code;
-      break;
-
     case "EGD_CON":
-      code = "// EGD_CON \n ";
-      return code;
-      break;
-
     case "ExternLink":
-      code = "// ExternLink \n ";
-      return code;
-      break;
-
     case "INTERFACE":
-      code = "// INTERFACE \n ";
-      return code;
-      break;
-
     case "LON_FLT":
-      code = "// LON_FLT \n ";
-      return code;
-      break;
-
     case "LON_GROUP":
-      code = "// LON_GROUP \n ";
-      return code;
-      break;
-
     case "LON_MOD":
-      code = "// LON_MOD \n ";
-      return code;
-      break;
-
     case "MEXPCHAS12":
-      code = "// MEXPCHAS12 \n ";
-      return code;
-      break;
-
     case "MICRONET12":
-      code = "// MICRONET12 \n ";
-      return code;
-      break;
-
+    case "MODBUS_M":
+    case "MODBUS_S":
     case "MOD_PORT":
-      code = "// MOD_PORT \n ";
-      return code;
-      break;
-
     case "NODE_FLT":
-      code = "// NODE_FLT \n ";
-      return code;
-      break;
-
     case "NT_CPU":
-      code = "// NT_CPU \n ";
-      return code;
-      break;
-
     case "NV_LOG":
-      code = "// NV_LOG \n ";
-      return code;
-      break;
-
     case "PIPE_P":
-      code = "// PIPE_P \n ";
-      return code;
-      break;
-
     case "RTC":
-      code = "// RTC \n ";
-      return code;
-      break;
-
     case "SIO":
-      code = "// SIO \n ";
-      return code;
-      break;
-
     case "SIO_PORT":
-      code = "// SIO_PORT \n ";
-      return code;
-      break;
-
     case "SIO232PORT":
-      code = "// SIO232PORT \n ";
-      return code;
-      break;
-
     case "SYS_INFO":
-      code = "// SYS_INFO \n ";
-      return code;
-      break;
-
     case "TCP_P":
-      code = "// TCP_P \n ";
-      return code;
-      break;
-
     case "TUNE_VAR":
-      code = "// TUNE_VAR \n ";
-      return code;
-      break;
-
     case "UDP_P":
-      code = "// UDP_P \n ";
+
+      code = "// ";
+      code = code.concat(parameters.block.BlockType).concat(" \n")
       return code;
       break;
 
@@ -270,31 +165,19 @@ function blockSwitch ( parameters ) {
       code = code.concat( stringInputs ).concat( ';\n' );
 
       return code;
-
       break;
 
     case "DIVIDE":
 
-      parameters.fields.forEach( function ( element, index, array ){
-        if ( element.IOType === 'Input'){
-          if( element.FieldName === 'B_ENABLE'){   //REVISAR funcuion negada
-          } else {
-            if( /[a-z]/i.test( element.Value ) ){
-              inputValues.push( element.Value.replace(/\56/g,"_") );
-            }else{
-              inputValues.push( element.Value );
-            }
-          }
-        }
-      });
-
-      stringInputs = inputValues.join(' / ');
+      var lol = arguments( parameters );
+      console.log(lol);
+      lol.inputs.splice(0,1);
+      console.log(lol);
+      stringInputs = lol.inputs.join(' / ');
       code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_DIVIDE = ');
       code = code.concat( stringInputs ).concat( ';\n' );
-
       return code;
-
       break;
 
     case "A_NAME":
@@ -324,6 +207,12 @@ function blockSwitch ( parameters ) {
       return code;
 
       break;
+
+    case "NOT":
+      
+      
+      
+    break;
 
     default:
       parameters.fields.forEach( function ( element, index, array ) {
@@ -400,6 +289,51 @@ function blockSwitch ( parameters ) {
   }
 
   return bigCode;
+
+  function arguments ( parameters ) {
+
+    var inputValues = new Array,
+        outputValues = new Array,
+        tuneValues = new Array,
+        arrayInputs = {};
+
+    parameters.fields.forEach( function ( element, index, array ) {
+      if ( element.IOType === 'Input' ){
+        if ( element.Value === null ) {
+          inputValues.push('0')
+        } else{
+          if( /[a-z]/i.test( element.Value ) ){
+            inputValues.push( element.Value.replace(/\56/g,"_") );
+          }else{
+            inputValues.push( element.Value );
+          }
+        }
+      } else{
+        if ( element.IOType === 'Tune' ) {
+          /*
+          if ( element.Value === '*FALSE' ) {
+           tuneValues.push( 0 );
+          } else { 
+          */
+          tuneValues.push( element.Value );
+        } else {
+          if ( element.IOType === 'Output' ) {
+            if ( element.Value != null ) {
+              outputValues.push( element.Value );
+            } else {
+              outputValues.push( element.FieldName );
+            }
+          }
+        }
+      }
+    });
+
+    arrayInputs.inputs = inputValues;
+    arrayInputs.outputs = outputValues;
+    arrayInputs.tunes = tuneValues;
+
+    return arrayInputs;
+  }
 }
 
 /*String.prototype.isNumber = function(){return /^\d$/.test(this);}
