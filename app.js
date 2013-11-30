@@ -171,7 +171,6 @@ function blockSwitch ( parameters ) {
 
       var lol = arguments( parameters );
       lol.inputs.splice(0,1);
-      console.log(lol);
       stringInputs = lol.inputs.join(' / ');
       code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_DIVIDE = ');
@@ -240,34 +239,49 @@ function blockSwitch ( parameters ) {
               id[i] = element.Value.replace(/\56/g,"_") ;
             } else {
               id[i] = element.Value;
-              console.log( element.Value );
             }
 
           } else if ( String(element.FieldName).substring(0,5) === 'NAME_' ){
-            i = Number( String(element.FieldName).substring(5,6));
+            i = Number( String(element.FieldName).substring(5,7));
             name[i] = element.Value;
           } else if (  String(element.FieldName).substring(0,6) === 'FUNCT_') {
-            i = Number( String(element.FieldName).substring(6,7));
+            var caracteres;
+            i = Number( String(element.FieldName).substring(6,8));
+            caracteres = element.Value.length;
             func[i] = element.Value;
+
           };
         } 
       });
+      
 
       var searchfor,
           counterfunction;
       counterfunction = 1;
-      i = 1;
+      
       while( func[counterfunction] != null){
+        i = 1;
         while(name[i] != null){
-          searchfor = String(name[i]);
+          searchfor = " ";
+          searchfor = searchfor.concat(String(name[i]));
+          func[counterfunction] = func[counterfunction].replace( new RegExp(searchfor,'g'),id[i]);
+          searchfor = searchfor.concat(String(name[i]));
+          searchfor = searchfor.concat(" ");
           func[counterfunction] = func[counterfunction].replace( new RegExp(searchfor,'g'),id[i]);
           i++;
         }
-        console.log( func[counterfunction] );
+        inputValues.push( func[counterfunction] );
         counterfunction++;
       }
 
+      code = parameters.block.Category.concat('_');
+      code = code.concat( parameters.block.Name ).concat('_');
+      code = code.concat( parameters.block.BlockType ).concat(' = ');
+      stringInputs = inputValues.join(" # ");
+      stringInputs = stringInputs.replace( /#/g, " ");
+      code = code.concat( stringInputs ).concat( ';\n' );
 
+      return code;
       break;
 
     default:
@@ -292,11 +306,7 @@ function blockSwitch ( parameters ) {
             tuneValues.push( element.Value );
           } else {
             if ( element.IOType === 'Output' ) {
-              if ( element.Value != null ) {
-                outputValues.push( element.Value );
-              } else {
-                outputValues.push( element.FieldName );
-              }
+              outputValues.push( element.FieldName );
             }
           }
         }
