@@ -170,7 +170,6 @@ function blockSwitch ( parameters ) {
     case "DIVIDE":
 
       var lol = arguments( parameters );
-      console.log(lol);
       lol.inputs.splice(0,1);
       console.log(lol);
       stringInputs = lol.inputs.join(' / ');
@@ -209,10 +208,67 @@ function blockSwitch ( parameters ) {
       break;
 
     case "NOT":
-      
-      
-      
-    break;
+      var lol = arguments( parameters );
+      if( lol.inputs.length != 0) {
+        stringInputs = lol.inputs;
+      } else {
+        stringInputs = lol.tunes;
+      }
+      code = parameters.block.Category.concat('_');
+      code = code.concat( parameters.block.Name ).concat('_');
+      code = code.concat( parameters.block.BlockType ).concat(' =! ');
+      code = code.concat( stringInputs ).concat( ';\n' );
+      return code;
+           
+      break;
+
+    case "CALCULATE":
+      var name = [],
+          id = [],
+          func = [],
+          i;
+       i = 0;
+
+      parameters.fields.forEach( function ( element, index, array){
+              
+      //console.log(String(element.IOType).substring(0,4));
+        if( element.IOType === 'Input' ){
+          if( String(element.FieldName).substring(0,3) === 'IN_' ){
+
+            i = Number( String(element.FieldName).substring(3,5) );
+            if( /[a-z]/i.test( element.Value ) ){
+              id[i] = element.Value.replace(/\56/g,"_") ;
+            } else {
+              id[i] = element.Value;
+              console.log( element.Value );
+            }
+
+          } else if ( String(element.FieldName).substring(0,5) === 'NAME_' ){
+            i = Number( String(element.FieldName).substring(5,6));
+            name[i] = element.Value;
+          } else if (  String(element.FieldName).substring(0,6) === 'FUNCT_') {
+            i = Number( String(element.FieldName).substring(6,7));
+            func[i] = element.Value;
+          };
+        } 
+      });
+
+      var searchfor,
+          counterfunction;
+      counterfunction = 1;
+      i = 1;
+      while( func[counterfunction] != null){
+        while(name[i] != null){
+          searchfor = String(name[i]);
+          func[counterfunction] = func[counterfunction].replace( new RegExp(searchfor,'g'),id[i]);
+          i++;
+        }
+        console.log( func[counterfunction] );
+        counterfunction++;
+      }
+
+
+      break;
 
     default:
       parameters.fields.forEach( function ( element, index, array ) {
