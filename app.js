@@ -169,6 +169,8 @@ function blockSwitch ( parameters ) {
 
     case "DIVIDE":
     case "SUBTRACT":
+    case "MULTIPLY":
+    case "ADD":
 
       var lol = arguments( parameters );
       lol.inputs.splice(0,1);
@@ -178,21 +180,18 @@ function blockSwitch ( parameters ) {
       if ( parameters.block.BlockType === "SUBTRACT") {
         stringInputs = lol.inputs.join(' - ');
       };
+      if ( parameters.block.BlockType === "ADD") {
+        stringInputs = lol.inputs.join(' + ');
+      };
+      if ( parameters.block.BlockType === "MULTIPLY") {
+        stringInputs = lol.inputs.join(' * ');
+      };
       code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_');
       code = code.concat( parameters.block.BlockType ).concat(' = ');
       code = code.concat( stringInputs ).concat( ';\n' );
       return code;
       break;
-
-    /*  var lol = arguments( parameters );
-      lol.inputs.splice(0,1);
-      stringInputs = lol.inputs.join(' - ');
-      code = parameters.block.Category.concat('_');
-      code = code.concat( parameters.block.Name ).concat('_SUBTRACT = ');
-      code = code.concat( stringInputs ).concat( ';\n' );
-      return code;   
-      break;*/
 
     case "A_NAME":
     case "B_NAME":
