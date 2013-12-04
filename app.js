@@ -168,15 +168,31 @@ function blockSwitch ( parameters ) {
       break;
 
     case "DIVIDE":
+    case "SUBTRACT":
 
       var lol = arguments( parameters );
       lol.inputs.splice(0,1);
-      stringInputs = lol.inputs.join(' / ');
+      if ( parameters.block.BlockType === "DIVIDE") {
+        stringInputs = lol.inputs.join(' / ');
+      };
+      if ( parameters.block.BlockType === "SUBTRACT") {
+        stringInputs = lol.inputs.join(' - ');
+      };
       code = parameters.block.Category.concat('_');
-      code = code.concat( parameters.block.Name ).concat('_DIVIDE = ');
+      code = code.concat( parameters.block.Name ).concat('_');
+      code = code.concat( parameters.block.BlockType ).concat(' = ');
       code = code.concat( stringInputs ).concat( ';\n' );
       return code;
       break;
+
+    /*  var lol = arguments( parameters );
+      lol.inputs.splice(0,1);
+      stringInputs = lol.inputs.join(' - ');
+      code = parameters.block.Category.concat('_');
+      code = code.concat( parameters.block.Name ).concat('_SUBTRACT = ');
+      code = code.concat( stringInputs ).concat( ';\n' );
+      return code;   
+      break;*/
 
     case "A_NAME":
     case "B_NAME":
@@ -253,7 +269,6 @@ function blockSwitch ( parameters ) {
           };
         } 
       });
-      
 
       var searchfor,
           counterfunction;
@@ -277,6 +292,91 @@ function blockSwitch ( parameters ) {
       code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_');
       code = code.concat( parameters.block.BlockType ).concat(' = ');
+      stringInputs = inputValues.join(" # ");
+      stringInputs = stringInputs.replace( /#/g, " ");
+      code = code.concat( stringInputs ).concat( ';\n' );
+
+      return code;
+      break;
+
+    case "CALC_PLUS":
+      var name = [],
+          id = [],
+          outputname = [],
+          outputid = [],
+          counterouputid,
+          counteroutputname,
+          func = [],
+          counterid,
+          countername,
+          i;
+          i = 0;
+          counterid = 1;
+          countername = 1;
+          counteroutputname = 1;
+          counterouputid = 1;
+
+      parameters.fields.forEach( function ( element, index, array){
+              console.log(String(element.FieldName).substring(1,8));
+      //console.log(String(element.IOType).substring(0,4));
+        if( element.IOType === 'Input' || element.IOType === 'Tune' ){
+          
+          if( String(element.FieldName).substring(1,5) === '_IN_' ){
+
+            if( /[a-z]/i.test( element.Value ) ){
+              id[counterid] = element.Value.replace(/\56/g,"_") ;
+            } else {
+              id[counterid] = element.Value;
+            }
+            counterid++;
+          } else if ( String(element.FieldName).substring(1,8) === 'I_NAME_' ){
+            name[countername] = element.Value;
+            countername++;
+          } else if (  String(element.FieldName).substring(0,6) === 'FUNCT_') {
+
+            var caracteres;
+            i = Number( String(element.FieldName).substring(6,8));
+            caracteres = element.Value.length;
+            func[i] = element.Value;
+
+          } else if ( String(element.FieldName).substring(1,8) === 'O_NAME_' ) {
+            outputname[ counteroutputname ] = element.Value;
+            counteroutputname++;
+          }
+        } else if ( element.IOType === 'Output' ){
+          if( String(element.FieldName).substring(1,6) === '_OUT_' ){
+            outputid [counterouputid] = parameters.block.Category.concat('_');
+            outputid [counterouputid] = outputid [counterouputid].concat( parameters.block.Name ).concat('_');
+            outputid [counterouputid] = outputid [counterouputid].concat( element.FieldName );
+            counterouputid++;
+          }
+        }
+      });
+      
+      var searchfor,
+          counterfunction;
+      counterfunction = 1;
+      
+      while( func[counterfunction] != null){
+        i = 1;
+        while(name[i] != null){
+          
+          searchfor = name[i];
+          func[counterfunction] = func[counterfunction].replace( new RegExp(searchfor,'g'),id[i]);
+          i++;
+        }
+        i = 1;
+        while(outputname[i] != null){
+          
+          searchfor = outputname[i];
+          func[counterfunction] = func[counterfunction].replace( new RegExp(searchfor,'g'),outputid[i]);
+          i++;
+        }
+
+        inputValues.push( func[counterfunction] );
+        counterfunction++;
+      }
+
       stringInputs = inputValues.join(" # ");
       stringInputs = stringInputs.replace( /#/g, " ");
       code = code.concat( stringInputs ).concat( ';\n' );
