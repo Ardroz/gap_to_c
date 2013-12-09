@@ -40,3 +40,35 @@ int I_SW_FUNCTION( bool CTRL, int NO, int NC){
   return i_sw;
 }
 
+void COUNTER_FUNCTION( bool B_ENABLE, double IN_1, bool RST, int RST_VAL, bool TRIGGER, bool TRIGGERLAST, bool RSTLAST, bool COUNTER) {
+  bool resetrising;
+  if ( B_ENABLE ) {
+    if ( RSTLAST == 0 ) {
+      if ( RST == 1 ) {
+        resetrising = 1;
+      } else {
+        resetrising = 0;
+      }
+    }
+    if ( resetrising == 1) {
+      COUNTER = RST_VAL;
+    } else{
+      if ( TRIGGERLAST == 0 ) {
+        if ( TRIGGER ) {
+          COUNTER++;
+        }
+      }
+    }
+  }
+
+  if ( COUNTER => IN_1 ) {
+    Output2 = 1;
+  } else {
+    Output2 = 0;
+  }
+
+  Output1 = COUNTER;
+  //Output2 = CMP_OUT;
+  Output3 = TRIGGER;
+  Output4 = RST;
+}

@@ -383,6 +383,40 @@ function blockSwitch ( parameters ) {
       return code;
       break;
 
+    case "COUNTER":
+      var lol = arguments( parameters );
+      var valuelast;
+      var valuelast1;
+      var valuecounter;
+
+      code = code.concat("  bool ");
+      valuelast = parameters.block.Category.concat('_');
+      valuelast = valuelast.concat( parameters.block.Name ).concat('_TRIGGERLAST');
+      code = code.concat( valuelast ).concat(";\n");
+
+      code = code.concat("  bool ");
+      valuelast1 = parameters.block.Category.concat('_');
+      valuelast1 = valuelast1.concat( parameters.block.Name ).concat('_RSTLAST');
+      code = code.concat(valuelast1).concat(";\n");
+
+      valuecounter = parameters.block.Category.concat('_');
+      valuecounter = valuecounter.concat( parameters.block.Name ).concat('_COUNTER');
+
+      code = code.concat( parameters.block.BlockType ).concat('_FUNCTION ( ');
+      lol.inputs.push(valuelast);
+      lol.inputs.push(valuelast1);
+      lol.inputs.push(valuecounter);
+
+      stringInputs = lol.inputs.join(' , ');
+      code = code.concat( stringInputs ).concat( " );\n")
+
+      valuelast = parameters.block.Category.concat('_');
+      valuelast = valuelast.concat( parameters.block.Name );
+
+      
+      return code;
+      break;
+
     default:
       parameters.fields.forEach( function ( element, index, array ) {
         if ( element.IOType === 'Input' ){
