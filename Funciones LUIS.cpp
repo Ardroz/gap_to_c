@@ -456,3 +456,47 @@ void B_FORCE_FUNCTION( bool ENABLE, int FINH, int FMD, int In, int TUNE, int *B_
     *FRC=0;
   }
 }
+
+void B_ALARM_FUNCTION( int ACKN, bool Enable, double DLY_TIME, int In, int OVRD, int RESET, int *B_ALARM, int *HORN, int *LIGHT) {
+  
+  double counter=0;
+  counter=counter+0.05;
+
+  if(counter>DLY_TIME && OVRD==0 && In==1) {
+    *B_ALARM=1;
+    *HORN=1;
+
+    if(ACKN==1) {
+      *HORN=0;
+    }
+  }
+  else if(In==0 && RESET==1) {
+    *B_ALARM=0;
+  }
+
+  *LIGHT=*B_ALARM;
+}
+
+void F_TO_C_FUNCTION(int B_ENABLE,double IN_1,double IN_2,double IN_3,double IN_4,double IN_5,double IN_6,double *OUT_1,  double *OUT_2,  double *OUT_3,  double *OUT_4,  double *OUT_5,  double *OUT_6 ) {
+
+  *OUT_1=(IN_1-32)/1.8;
+  *OUT_2=(IN_2-32)/1.8;
+  *OUT_3=(IN_3-32)/1.8;
+  *OUT_4=(IN_4-32)/1.8;
+  *OUT_5=(IN_5-32)/1.8;
+  *OUT_6=(IN_6-32)/1.8;
+}
+
+double LATCH_R_FUNCTION(int B_ENABLE, int RST, int TRIGGER) {
+  int LATCH_R;
+  if(RST==1)
+  {
+    LATCH_R=0;
+  }else if(TRIGGER==1)
+  {
+    LATCH_R=1;
+  } else {
+    LATCH_R = 0;
+  }
+  return LATCH_R;
+}
