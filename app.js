@@ -153,6 +153,7 @@ function blockSwitch ( parameters ) {
       code = code.concat("}\n");
       return code;
       break;
+      
     case "AND":
     case "NAND":
 

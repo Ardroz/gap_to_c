@@ -510,3 +510,11 @@ bool LATCH_FUNCTION(int B_ENABLE,int RST, int TRIGGER , bool latch) {
   }
   return output;
 }
+
+double NEGATE_FUNCTION(int B_ENABLE, double INT) {
+  double NEGATE;
+
+    NEGATE=INT*(-1);
+
+  return NEGATE;
+}
