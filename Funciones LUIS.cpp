@@ -363,3 +363,31 @@ void A_COMPARE_FUNCTION( int HYSTER, double IN_1, double IN_2, int *ACOMPARE, in
     *AEQUAL=0;
   }
 }
+
+void A_FORCE_FUNCTION(int B_ENABLE, int FINH, int FMD, double In, double TUNE, double *A_FORCE, int *FRC) {
+  //B_ENABLE  Habilitación de la función
+  //In    Señal analógica de entrada
+  //FINH    Inhibición de la función
+  //FMD   Modo de forzado
+  //TUNE    Valor al que se va a forzar la variable de entrada
+  //A_FORCE Salida Principal de la función
+  //FRC   Estatus de la función
+  if(B_ENABLE==1)
+  {
+    if(FINH==1)
+    {
+      *A_FORCE=In;
+      *FRC=0;
+    }
+    else if(FINH==0 && FMD==1)
+    {
+      *FRC=1;
+      *A_FORCE=TUNE;
+    }
+  }
+  else
+  {
+    *A_FORCE=0;
+    *FRC=0;
+  }
+}
