@@ -121,30 +121,43 @@ function blockSwitch ( parameters ) {
       break;
 
     case "A_MUX_N_1":
+    case "B_MUX_N_1":
+
       var numbervars;
 
       parameters.fields.forEach( function ( element, index, array ){
         if ( element.IOType === 'Input' || element.IOType === 'Tune' ){
-          if(element.FieldName === 'SEL'){
-            while(inputValues.length < 6){
-              inputValues.push("0");
-            }
-          }
           if( /[a-z]/i.test( element.Value ) ){
               inputValues.push( element.Value.replace(/\56/g,"_") );
           }else{
               inputValues.push( element.Value );
           }
+        } else if ( element.IOType === 'Output' ){
+            outputValues.push( element.FieldName );
         }
       });
-      
-      code = parameters.block.Category.concat('_');
+      stringOutputs = parameters.block.Category.concat("_");
+      stringOutputs = stringOutputs.concat( parameters.block.Name ).concat("_");
+      stringOutputs = stringOutputs.concat( outputValues[0]).concat(" = ");
+      numbervars = inputValues.length;
+      code = "switch(";
+      code = code.concat( inputValues [numbervars- 1]).concat(") { \n");
+      var i = 1;
+      while(i < (numbervars - 1)){
+        code = code.concat("  case_").concat(i).concat(":\n    ");
+        code = code.concat( stringOutputs );
+        code = code.concat(inputValues [i]).concat(";\n  ");
+        code = code.concat( "break;\n")
+        i++;
+      }
+      code = code.concat("}\n");
+      /*code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_');
       code = code.concat( parameters.block.BlockType ).concat(' = ');
       code = code.concat( parameters.block.BlockType ).concat ('_FUNCTION ( ');
       stringInputs = inputValues.join( ',' );
       code = code.concat( stringInputs ).concat(');\n');
-
+  */
       return code;
       break;
     case "AND":
@@ -247,7 +260,7 @@ function blockSwitch ( parameters ) {
         cont--;
 
       }
-
+      return code;
       break;
     case "A_NAME":
     case "B_NAME":

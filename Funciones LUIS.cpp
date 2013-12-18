@@ -435,3 +435,44 @@ double A_LIMITER_FUNCTION(int B_ENABLE, double In, double IN_HI , double IN_LOW)
   return A_LIMITER;
 }
 
+void AI_420_L_FUNCTION(double GAIN, double HI_SP, double In, double LATCH_DLY, double LO_SP, double OFFSET, double OVRD, int RST,  double VAL_20, double VAL_4, double *AI_420_L, int *FAULT, int *HI_LATCH, int *LATCH_OR, int *LO_LATCH ){
+  double counter=0;
+
+  counter=counter+0.05;
+
+  if(counter>=LATCH_DLY)
+  {
+    *AI_420_L=((LO_SP+((In - VAL_4)*((HI_SP - LO_SP)/(VAL_20 - VAL_4))))+OFFSET)*GAIN;
+  }
+  else
+  {
+    *AI_420_L=0;
+  }
+
+  if(In>=HI_SP)
+  {
+    *HI_LATCH=1;
+  }
+  else if(RST==1 && (In<HI_SP))
+  {
+    *HI_LATCH=0;
+  }
+
+  if(*FAULT==1 || *HI_LATCH==1 || *LO_LATCH==1)
+  {
+    *LATCH_OR=1;
+  }
+  else
+  {
+    *LATCH_OR=0;
+  }
+
+  if((In<LO_SP) && OVRD==0)
+  {
+    *LO_LATCH=1;
+  }
+  else if(RST==1 && (In>LO_SP))
+  {
+    *LO_LATCH=0;
+  }
+}
