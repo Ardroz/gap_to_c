@@ -518,3 +518,26 @@ double NEGATE_FUNCTION(int B_ENABLE, double INT) {
 
   return NEGATE;
 }
+
+void ONE_SHOT_FUNCTION ( bool B_ENABLE, double DLY_TIME, bool RST, bool TRIGGER, bool *ONE_SHOT, int *R_TIME, bool *LAST_TRIGGER ){
+  if( !(*LAST_TRIGGER) ){
+    if ( TRIGGER ) {
+      *ONE_SHOT = 1;
+      *R_TIME = DLY_TIME + 0.05;
+    }
+  }
+
+  if ( RST ) {
+    *ONE_SHOT = 0;
+  }
+
+  *R_TIME = *R_TIME - 0.05;
+
+  if ( *R_TIME <= 0 ) {
+    *ONE_SHOT = 0;
+  }
+
+  *LAST_TRIGGER = TRIGGER;
+  return;
+}
+
