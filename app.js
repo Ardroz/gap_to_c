@@ -151,13 +151,6 @@ function blockSwitch ( parameters ) {
         i++;
       }
       code = code.concat("}\n");
-      /*code = parameters.block.Category.concat('_');
-      code = code.concat( parameters.block.Name ).concat('_');
-      code = code.concat( parameters.block.BlockType ).concat(' = ');
-      code = code.concat( parameters.block.BlockType ).concat ('_FUNCTION ( ');
-      stringInputs = inputValues.join( ',' );
-      code = code.concat( stringInputs ).concat(');\n');
-  */
       return code;
       break;
     case "AND":

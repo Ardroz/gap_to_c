@@ -70,44 +70,6 @@ void COUNTER_FUNCTION( bool B_ENABLE, double IN_1, bool RST, int RST_VAL, bool T
   *RSTLAST = RST;
 }
 
-double A_MUX_N_1_FUNCTION(int B_ENABLE, double IN_1, double IN_2, double IN_3, double IN_4, double IN_5, int SEL) {
-  
-  //B_ENABLE    Habilitación de la función
-  //SEL     Selector de la salida de la función
-  //IN_x      Señales de entrada a la función
-  double A_MUX_N_1;
-
-  if(B_ENABLE==1) {
-
-    if(1<SEL>5) {
-      A_MUX_N_1=A_MUX_N_1;
-    }
-    else if(SEL==1) {
-      A_MUX_N_1=IN_1;
-    }
-    else if(SEL==2) {
-      A_MUX_N_1=IN_2;
-    }
-    else if(SEL==3) {
-      A_MUX_N_1=IN_3;
-    }
-    else if(SEL==4) {
-      A_MUX_N_1=IN_4;
-    }
-    else if(SEL==5) {
-      A_MUX_N_1=IN_5;
-    }
-    else {
-      A_MUX_N_1=0;
-    }
-  }
-  else {
-    A_MUX_N_1=0;
-  }
-
-  return A_MUX_N_1;
-}
-
 double A_SW_FUNCTION(int CTRL, double NC, double NO) {
   
   //CTRL    Señal de control del switch.
@@ -474,5 +436,23 @@ void AI_420_L_FUNCTION(double GAIN, double HI_SP, double In, double LATCH_DLY, d
   else if(RST==1 && (In>LO_SP))
   {
     *LO_LATCH=0;
+  }
+}
+
+void B_FORCE_FUNCTION( bool ENABLE, int FINH, int FMD, int In, int TUNE, int *B_FORCE, int *FRC) {
+  if(FINH==1)
+  {
+    FMD=0;
+  }
+
+  if(FMD==1)
+  {
+    *B_FORCE=TUNE;
+    *FRC=1;
+  }
+  else
+  {
+    *B_FORCE=In;
+    *FRC=0;
   }
 }
