@@ -154,3 +154,26 @@ void BI_L_FUNCTION(double IO_CHANNEL, int *BI_L, int *BI_L_NOT) {
     *BI_L_NOT=NULL;
   }
 }
+
+int B_SW_FUNCTION(int CTRL, int NC, int NO) {
+  int B_SW;
+
+  if(CTRL==1) {
+    B_SW=NO;
+  }
+  else if(CTRL==0) {
+    B_SW=NC;
+  }
+
+  return B_SW;
+}
+
+void B_SW_REV_FUNCTION(int CTRL, int DFLT, int In, int *NC, int *NO) {
+  if(CTRL==1) {
+    *NC=DFLT;
+    *NO=In;
+  } else {
+    *NC=In;
+    *NO=DFLT;
+  }
+}
