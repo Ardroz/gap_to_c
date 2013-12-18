@@ -304,3 +304,62 @@ void AO_COMBO_FUNCTION(bool ENABLE, double GAIN, double In, double MAX_CUR, doub
     *READBACK=*IO_CHANNEL;
   }
 }
+
+void A_COMPARE_FUNCTION( int HYSTER, double IN_1, double IN_2, int *ACOMPARE, int *AEQUAL) {
+  //IN_1    Señal de entrada 1 a la función
+  //IN_2    Señal de entrada 2 a la función
+  //HYSTER  Variable para señalar el tipo de comparación
+  //A_COMPARE Salida principal de la función
+  //A_EQUAL Salida secundaria de la función
+
+  if(HYSTER==0)
+  {
+    if(IN_1>IN_2)
+    {
+      *ACOMPARE=1;
+    }
+    else
+    {
+      *ACOMPARE=0;
+    }
+  }
+  else if(HYSTER>0)
+  {
+    if((IN_1>(IN_2+HYSTER))||(IN_2<(IN_1-HYSTER)))
+    {
+      *ACOMPARE=1;
+    }
+    else
+    {
+      *ACOMPARE=0;
+    }
+  }
+  else if(HYSTER<0)
+  {
+    if(IN_1>IN_2)
+    {
+      *ACOMPARE=1;
+    }
+    else if((IN_1<(IN_2-abs(HYSTER)))||(IN_2>=(IN_1+abs(HYSTER))))
+    {
+      *ACOMPARE=0;
+    }
+    else
+    {
+      *ACOMPARE=0;
+    }
+  }
+  else
+  {
+    *ACOMPARE=0;
+  }
+
+  if(IN_1==IN_2)
+  {
+    *AEQUAL=1;
+  }
+  else
+  {
+    *AEQUAL=0;
+  }
+}
