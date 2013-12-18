@@ -541,3 +541,24 @@ void ONE_SHOT_FUNCTION ( bool B_ENABLE, double DLY_TIME, bool RST, bool TRIGGER,
   return;
 }
 
+void T_FLIPFLOP_FUNCTION ( bool B_ENABLE, bool IN_1, bool IN_2, bool RST, bool *T_FLIPFLOP, bool *LAST_IN_1, bool *LAST_IN_2 ) {
+  if ( !(*LAST_IN_1)  ) {
+    if ( IN_1 ) {
+      *T_FLIPFLOP = !*T_FLIPFLOP;
+    }
+  }
+
+  if ( !(*LAST_IN_2) ) {
+    if (  IN_2 ) {
+      *T_FLIPFLOP = !*T_FLIPFLOP;
+    }
+  }
+
+  if ( RST ) {
+    *T_FLIPFLOP = 0;
+  }
+
+  *LAST_IN_1 = IN_1;
+  *LAST_IN_2 = IN_2;
+  return;
+}
