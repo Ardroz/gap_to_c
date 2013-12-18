@@ -17,7 +17,7 @@ void RTRIG(int variable,int out_variable[])
 	if(out_variable[2]==1)
 		{
 			out_variable[1]=1;
-			out_variable[4]=out_variable[4]+1;
+			out_variable[4]=out_variable[4]+1;file:///C:/Users/Ricardo%20Rodriguez/Downloads/FuncionesGAP.cpp
 			if(out_variable[4]>=Work_cycle)
 				{
 					out_variable[1]=0;

@@ -78,6 +78,7 @@ function blockSwitch ( parameters ) {
   var bigCode = "",
       code = "",
       stringInputs = "",
+      stringOutputs = "",
       inputValues = new Array,
       outputValues = new Array,
       tuneValues = new Array,
@@ -119,6 +120,33 @@ function blockSwitch ( parameters ) {
       return code;
       break;
 
+    case "A_MUX_N_1":
+      var numbervars;
+
+      parameters.fields.forEach( function ( element, index, array ){
+        if ( element.IOType === 'Input' || element.IOType === 'Tune' ){
+          if(element.FieldName === 'SEL'){
+            while(inputValues.length < 6){
+              inputValues.push("0");
+            }
+          }
+          if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( element.Value.replace(/\56/g,"_") );
+          }else{
+              inputValues.push( element.Value );
+          }
+        }
+      });
+      
+      code = parameters.block.Category.concat('_');
+      code = code.concat( parameters.block.Name ).concat('_');
+      code = code.concat( parameters.block.BlockType ).concat(' = ');
+      code = code.concat( parameters.block.BlockType ).concat ('_FUNCTION ( ');
+      stringInputs = inputValues.join( ',' );
+      code = code.concat( stringInputs ).concat(');\n');
+
+      return code;
+      break;
     case "AND":
     case "NAND":
 
@@ -197,6 +225,8 @@ function blockSwitch ( parameters ) {
     case "B_NAME":
     case "I_NAME":
     case "T_NAME":
+    case "ZMINUS1":
+    case "ZMINUS1_B":
 
       parameters.fields.forEach( function ( element, index, array ){
         if ( element.IOType === 'Input' || element.IOType === 'Tune' ){
@@ -401,11 +431,16 @@ function blockSwitch ( parameters ) {
 
       valuecounter = parameters.block.Category.concat('_');
       valuecounter = valuecounter.concat( parameters.block.Name ).concat('_COUNTER');
+      
 
       code = code.concat( parameters.block.BlockType ).concat('_FUNCTION ( ');
-      lol.inputs.push(valuelast);
-      lol.inputs.push(valuelast1);
-      lol.inputs.push(valuecounter);
+      lol.inputs.push("&" + valuelast);
+      lol.inputs.push("&" + valuelast1);
+      lol.inputs.push("&" + valuecounter);
+      valuecounter = parameters.block.Category.concat('_');
+      valuecounter = valuecounter.concat( parameters.block.Name ).concat('_CMP_OUT');
+      lol.inputs.push("&" + valuecounter);
+
 
       stringInputs = lol.inputs.join(' , ');
       code = code.concat( stringInputs ).concat( " );\n")
@@ -472,10 +507,23 @@ function blockSwitch ( parameters ) {
 
   } else{ 
     //Para multiples salidas
+    stringOutputs = outputValues.join(' , ');
+
     code = code.concat( parameters.block.BlockType );
     code = code.concat('_FUNCTION(');
     code = code.concat( stringInputs );
+    
+    stringOutputs = "";
+    outputValues.forEach(function ( element, index, array ) {
+      stringOutputs = stringOutputs.concat(",");
+      stringOutputs = stringOutputs.concat("&").concat( parameters.block.Category ).concat( "_" );
+      stringOutputs = stringOutputs.concat( parameters.block.Name ).concat( "_" );
+      stringOutputs = stringOutputs.concat(element);
+    });
+      
+    code = code.concat( stringOutputs );
     code = code.concat( ');\n');
+    bigCode = code; /*
     bigCode = bigCode.concat( code );
     outputValues.forEach( function ( element, index, array ) {
       code = parameters.block.Category.concat('_');
@@ -484,7 +532,7 @@ function blockSwitch ( parameters ) {
       code = code.concat( "output" ).concat( index + 1 );
       code = code.concat(';\n');
       bigCode = bigCode.concat( code );
-    });
+    });*/
   }
 
   return bigCode;
