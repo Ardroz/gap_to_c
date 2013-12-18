@@ -153,7 +153,7 @@ function blockSwitch ( parameters ) {
       code = code.concat("}\n");
       return code;
       break;
-      
+
     case "AND":
     case "NAND":
 
@@ -205,21 +205,32 @@ function blockSwitch ( parameters ) {
     case "DIVIDE":
     case "SUBTRACT":
     case "MULTIPLY":
+    case "I_ADD":
     case "ADD":
 
-      var lol = arguments( parameters );
-      lol.inputs.splice(0,1);
+      parameters.fields.forEach( function ( element, index, array ){
+        if ( element.IOType === 'Input' || element.IOType === 'Tune' ){
+
+          if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( element.Value.replace(/\56/g,"_") );
+          }else{
+              inputValues.push( element.Value );
+          }
+        }
+      });
+
+      inputValues.splice(0,1);
       if ( parameters.block.BlockType === "DIVIDE") {
-        stringInputs = lol.inputs.join(' / ');
+        stringInputs = inputValues.join(' / ');
       };
       if ( parameters.block.BlockType === "SUBTRACT") {
-        stringInputs = lol.inputs.join(' - ');
+        stringInputs = inputValues.join(' - ');
       };
-      if ( parameters.block.BlockType === "ADD") {
-        stringInputs = lol.inputs.join(' + ');
+      if ( parameters.block.BlockType === "ADD" || parameters.block.BlockType === "I_ADD") {
+        stringInputs = inputValues.join(' + ');
       };
       if ( parameters.block.BlockType === "MULTIPLY") {
-        stringInputs = lol.inputs.join(' * ');
+        stringInputs = inputValues.join(' * ');
       };
       code = parameters.block.Category.concat('_');
       code = code.concat( parameters.block.Name ).concat('_');
@@ -488,6 +499,34 @@ function blockSwitch ( parameters ) {
       stringInputs = inputValues.join(" # ");
       stringInputs = stringInputs.replace( /#/g, " ");
       code = code.concat( stringInputs ).concat( ';\n' );
+
+      return code;
+      break;
+
+    case "ONE_SHOT":
+      parameters.fields.forEach( function ( element, index, array ){
+        if ( element.IOType === 'Input' || element.IOType === 'Tune' ){
+
+          if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( element.Value.replace(/\56/g,"_") );
+          }else{
+              inputValues.push( element.Value );
+          }
+        } else {
+          outputValues.push( '&' + parameters.block.Category + '_' + parameters.block.Name + '_' + element.FieldName )
+        }
+      });
+      var lol = "";
+      lol = lol.concat(parameters.block.Category).concat('_');
+      lol = lol.concat(parameters.block.Name).concat('_');
+      lol = lol.concat('LAST_TRIGGER');
+      code = "  bool ";
+      code = code.concat(lol).concat(';\n')
+      
+      code = code.concat(parameters.block.BlockType).concat("_FUNCTION(");
+      stringOutputs = outputValues.join( ',' )
+      stringInputs = inputValues.join(' , ');
+      code = code.concat(stringInputs).concat( ',' ).concat(outputValues).concat(',&').concat(lol).concat(');\n');
 
       return code;
       break;
