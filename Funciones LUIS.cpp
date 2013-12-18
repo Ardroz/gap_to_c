@@ -139,3 +139,18 @@ void BO_FORCE_FUNCTION(int B_ENABLE, int FINH, int FME, int In, int TUNE, int *B
     *FRC=0;
   }
 }
+
+void BI_L_FUNCTION(double IO_CHANNEL, int *BI_L, int *BI_L_NOT) {
+  if(IO_CHANNEL<8) {
+    *BI_L=0;
+    *BI_L_NOT=1;
+  }
+  else if(IO_CHANNEL>16) {
+    *BI_L=1;
+    *BI_L_NOT=0;
+  }
+  else {
+    *BI_L=NULL;
+    *BI_L_NOT=NULL;
+  }
+}
