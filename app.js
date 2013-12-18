@@ -531,6 +531,38 @@ function blockSwitch ( parameters ) {
       return code;
       break;
 
+    case "T_FLIPFLOP":
+      var lol = "  bool ";
+      lol = lol.concat(parameters.block.Category).concat('_');
+      lol = lol.concat(parameters.block.Name).concat('_');
+      code = lol.concat( "IN_1_LAST; \n" );
+      code = code.concat( lol ).concat( "IN_2_LAST; \n" );
+      code = code.concat(parameters.block.BlockType).concat("_FUNCTION(");
+
+      parameters.fields.forEach( function ( element, index, array ){
+        if ( element.IOType === 'Input' || element.IOType === 'Tune' ){
+
+          if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( element.Value.replace(/\56/g,"_") );
+          }else{
+              inputValues.push( element.Value );
+          }
+        } else {
+          outputValues.push( '&' + parameters.block.Category + '_' + parameters.block.Name + '_' + element.FieldName )
+        }
+      });
+      stringInputs = inputValues.join(' , ');
+      code = code.concat(stringInputs).concat(',').concat(outputValues).concat(',');
+      lol = "&";
+      lol = lol.concat(parameters.block.Category).concat('_');
+      lol = lol.concat(parameters.block.Name).concat('_').concat( "IN_1_LAST, &" );
+      lol = lol.concat(parameters.block.Category).concat('_');
+      lol = lol.concat(parameters.block.Name).concat('_').concat( "IN_2_LAST); \n " );
+      code = code.concat(lol);
+
+      return code;
+      break;
+
     case "COUNTER":
       var lol = arguments( parameters );
       var valuelast;
