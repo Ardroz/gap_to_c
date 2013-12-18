@@ -562,3 +562,32 @@ void T_FLIPFLOP_FUNCTION ( bool B_ENABLE, bool IN_1, bool IN_2, bool RST, bool *
   *LAST_IN_2 = IN_2;
   return;
 }
+
+void DEADBAND_FUNCTION ( bool B_ENABLE, double DB_1, double DB_2, double DEMAND, double HYSTER, bool ENBL, bool *RAISE_VAL, bool *LOWER_VAL, bool EXCD_DB_2 ) {
+  double difference = 0;
+
+  if ( ENBL ) {
+    difference = DEMAND - VAL;
+
+    if ( difference <= DB_1 ) {
+      *RAISE_VAL = 0;
+      *LOWER_VAL = 0;
+    } else if ( DEMAND > ( VAL + DB_1 ) ) {
+      *RAISE_VAL = 1;
+    } else if ( VAL > ( DEMAND + DB_1 ) {
+      *LOWER_VAL = 0;
+    }
+
+    difference = VAL - DEMAND;
+
+    if ( difference > DB_2 ) {
+      *EXCD_DB_2 = 1;
+    }
+
+    if ( difference < (DB_2 - HYSTER) ) {
+      *EXCD_DB_2 = 0;
+    }
+  }
+
+  return;
+}
