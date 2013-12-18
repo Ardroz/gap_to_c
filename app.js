@@ -357,6 +357,7 @@ function blockSwitch ( parameters ) {
       break;
 
     case "CALCULATE":
+    case "B_FUNCTION":
       var name = [],
           id = [],
           func = [],
