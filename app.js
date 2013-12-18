@@ -454,7 +454,7 @@ function blockSwitch ( parameters ) {
 
     default:
       parameters.fields.forEach( function ( element, index, array ) {
-        if ( element.IOType === 'Input' ){
+        if ( element.IOType === 'Input' || element.IOType === 'Tune' ) {
           if ( element.Value === null ) {
             inputValues.push('0')
           } else{
@@ -464,32 +464,19 @@ function blockSwitch ( parameters ) {
               inputValues.push( element.Value );
             }
           }
-        } else{
-          if ( element.IOType === 'Tune' ) {
-            /*
-            if ( element.Value === '*FALSE' ) {
-             tuneValues.push( 0 );
-            } else { 
-            */
-            tuneValues.push( element.Value );
-          } else {
-            if ( element.IOType === 'Output' ) {
-              outputValues.push( element.FieldName );
-            }
+        } else {
+          if ( element.IOType === 'Output' ) {
+            outputValues.push( element.FieldName );
           }
         }
+      });
+      
         //stringInputs se compone por los inputs
         stringInputs = inputValues.join(' , ');
-      });
+
     break;
   }
 
-  //Inputs separados por comas con todos los argumento sin tunes
-  //(stringInputs = stringInputs.replace(/\56/g,"_");
-  if( tuneValues.length != 0 ){
-    stringInputs = stringInputs.concat(' , ');
-    stringInputs = stringInputs.concat( tuneValues.join(' ,') );
-  }
   
   //en stringInputs estan todos los argumentos
   //console.log("Argumentos" + stringInputs);

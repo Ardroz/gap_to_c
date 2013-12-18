@@ -107,3 +107,35 @@ double A_MUX_N_1_FUNCTION(int B_ENABLE, double IN_1, double IN_2, double IN_3, d
 
   return A_MUX_N_1;
 }
+
+double A_SW_FUNCTION(int CTRL, double NC, double NO) {
+  
+  //CTRL    Señal de control del switch.
+  //NC    Señal de entrada para normalmente cerrado
+  //NO    Señal de entrada para normalmente abierto
+  //A_SW    Señal de salida de la función
+  double A_SW;
+
+  if(CTRL == 1) {
+    A_SW = NO;
+  }
+  else {
+    A_SW = NC;
+  }
+
+  return A_SW;
+}
+
+void BO_FORCE_FUNCTION(int B_ENABLE, int FINH, int FME, int In, int TUNE, int *BO_FORCE, int *FRC) {
+  if(FINH==1 || FME==0) {
+    *BO_FORCE=In;
+  }
+
+  if(FME==1) {
+    *BO_FORCE=TUNE;
+    *FRC=1;
+  }
+  else {
+    *FRC=0;
+  }
+}
