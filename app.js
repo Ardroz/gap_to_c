@@ -221,6 +221,34 @@ function blockSwitch ( parameters ) {
       return code;
       break;
 
+    case "A_TO_INT":
+      parameters.fields.forEach( function ( element, index, array ){
+        if ( element.IOType === 'Input' || element.IOType === 'Tune' ){
+
+          if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( element.Value.replace(/\56/g,"_") );
+          }else{
+              inputValues.push( element.Value );
+          }
+        } else if(element.IOType === 'Output'){
+          outputValues.push( parameters.block.Category + '_' + parameters.block.Name + '_' + element.FieldName );
+        }
+      });
+      var cont;
+      cont = outputValues.length;
+      console.log(outputValues.length);
+      console.log(inputValues.length);
+
+      while(cont != 0){
+        console.log(cont);
+        stringInputs = inputValues [cont ];
+        stringOutputs = outputValues [cont - 1];
+        code = code.concat( stringOutputs ).concat (' =(int)').concat( stringInputs ).concat( ';\n')
+        cont--;
+
+      }
+
+      break;
     case "A_NAME":
     case "B_NAME":
     case "I_NAME":
