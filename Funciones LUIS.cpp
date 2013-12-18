@@ -289,3 +289,18 @@ void AO_FORCE_FUNCTION(int enable,int FINH, int FME,double In,  double RATE, dou
   }
 }
 
+void AO_COMBO_FUNCTION(bool ENABLE, double GAIN, double In, double MAX_CUR, double MIN_CUR, double NUM_GOOD, double OFFSET,  int SD, double VAL_20, double VAL_4,int *AO_FAULT, double *DISPLAY, int *FAULT, double *IO_CHANNEL,  double *READBACK) {
+  *DISPLAY=In;
+
+  if(SD==1)
+  {
+    *IO_CHANNEL=0;
+    *DISPLAY=0;
+    *READBACK=0;
+  }
+  else
+  {
+    *IO_CHANNEL=((MIN_CUR+((In-VAL_4)*((MAX_CUR-MIN_CUR)/(VAL_20-VAL_4))))+OFFSET)*GAIN;
+    *READBACK=*IO_CHANNEL;
+  }
+}
