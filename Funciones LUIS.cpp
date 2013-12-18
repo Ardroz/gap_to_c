@@ -126,6 +126,25 @@ double A_SW_FUNCTION(int CTRL, double NC, double NO) {
   return A_SW;
 }
 
+double A_MIN_FUNCTION(double IN_1, double IN_2) {
+  
+  //IN_1    Señal de entrada 1 a la función
+  //IN_2    Señal de entrada 2 a la función
+  //A_MIN   Salida de la función
+  double A_MIN;
+
+  if(IN_1<IN_2) {
+    A_MIN=IN_1;
+  }
+  else if(IN_1>IN_2) {
+    A_MIN=IN_2;
+  }
+  else {
+    A_MIN=IN_1;
+  }
+  return A_MIN;
+}
+
 void BO_FORCE_FUNCTION(int B_ENABLE, int FINH, int FME, int In, int TUNE, int *BO_FORCE, int *FRC) {
   if(FINH==1 || FME==0) {
     *BO_FORCE=In;
@@ -218,3 +237,4 @@ double A_MAX_FUNCTION(double IN_1, double IN_2) {
 
   return A_MAX;
 }
+
