@@ -227,6 +227,20 @@ function blockSwitch ( parameters ) {
       return code;
       break;
 
+    case "LATCH_R":
+    case "LATCH":
+      var lol = arguments( parameters );
+      stringOutputs = parameters.block.Category.concat("_");
+      stringOutputs = stringOutputs.concat(parameters.block.Name).concat("_");
+      stringOutputs = stringOutputs.concat(parameters.block.BlockType);
+      lol.inputs.push(stringOutputs);
+
+      stringInputs = lol.inputs.join(',');
+      code = stringOutputs.concat( " = ").concat(parameters.block.BlockType).concat("_FUNCTION(");
+      code = code.concat(stringInputs).concat(");\n")
+      return code;
+      break;
+
     case "I_TO_AN":
       parameters.fields.forEach( function ( element, index, array ){
         if ( element.IOType === 'Input' || element.IOType === 'Tune' ){

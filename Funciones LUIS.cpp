@@ -487,16 +487,26 @@ void F_TO_C_FUNCTION(int B_ENABLE,double IN_1,double IN_2,double IN_3,double IN_
   *OUT_6=(IN_6-32)/1.8;
 }
 
-double LATCH_R_FUNCTION(int B_ENABLE, int RST, int TRIGGER) {
+bool LATCH_R_FUNCTION(int B_ENABLE, int RST, int TRIGGER, bool latch) {
   int LATCH_R;
-  if(RST==1)
-  {
+  if(RST==1) {
     LATCH_R=0;
-  }else if(TRIGGER==1)
-  {
-    LATCH_R=1;
+  }else if(TRIGGER==1) {
+    LATCH_R = 1;
   } else {
-    LATCH_R = 0;
+    LATCH_R = latch;
   }
   return LATCH_R;
+}
+
+bool LATCH_FUNCTION(int B_ENABLE,int RST, int TRIGGER , bool latch) {
+  bool ouput;
+  if( TRIGGER == 1 ) {
+    output = 1;
+  }else if(RST==1) {
+    output=0;
+  } else {
+    output = latch;
+  }
+  return output;
 }
