@@ -177,3 +177,44 @@ void B_SW_REV_FUNCTION(int CTRL, int DFLT, int In, int *NC, int *NO) {
     *NO=DFLT;
   }
 }
+
+void BIO_BI_FUNCTION(double IO_CHANNEL, int ENABLE_TS, int RST_TS, int *BIO_BI, int *BI_NOT, int *LO_TSEVENT, double *LO_TIME, int *HI_TSEVENT, double *HI_TIME) {
+  if(IO_CHANNEL<8)
+  {
+    *BIO_BI=0;
+    *BI_NOT=1;
+  }
+  else if(IO_CHANNEL>16)
+  {
+    *BIO_BI=1;
+    *BI_NOT=0;
+  }
+
+  if(ENABLE_TS==0)
+  {
+    *LO_TSEVENT=0;
+    *HI_TSEVENT=0;
+    *LO_TIME=*LO_TIME;
+    *HI_TIME=*HI_TIME;
+  }
+}
+
+double A_MAX_FUNCTION(double IN_1, double IN_2) {
+  //IN_1    Señal de entrada 1 a la función
+  //IN_2    Señal de entrada 2 a la función
+  //A_MAX   Salida de la función
+
+  double A_MAX;
+
+  if(IN_1>IN_2) {
+    A_MAX=IN_1;
+  }
+  else if(IN_1<IN_2) {
+    A_MAX=IN_2;
+  }
+  else {
+    A_MAX=IN_1;
+  }
+
+  return A_MAX;
+}
