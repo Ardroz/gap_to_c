@@ -238,3 +238,54 @@ double A_MAX_FUNCTION(double IN_1, double IN_2) {
   return A_MAX;
 }
 
+void A_SW_REV_FUNCTION(int CTRL, double DFLT, double In, double *NC, double *NO) {
+  //CTRL    Señal de control del switch
+  //DFLT    Valor por default de la función
+  //In    Señal de entrada a la función
+  //NC    Salida normalmente cerrada de la función
+  //NO    Salida normalmente abierta de la función
+
+  if(CTRL==1) {
+    *NC=DFLT;
+    *NO=In;
+  }
+  else {
+    *NC=In;
+    *NO=DFLT;
+  }
+}
+
+double ABSOLUTE_FUNCTION(double In) {
+  
+  //In    Señal de entrada a la función
+  //ABSOLUTE  Señal de salida de la función
+  double ABSOLU;
+  ABSOLU=abs(In);
+  return ABSOLU;
+}
+
+void AO_FORCE_FUNCTION(int enable,int FINH, int FME,double In,  double RATE, double TUNE, double *AO_FORCE, int *FRC) {
+  if(FINH==1 || FME==0) {
+    *AO_FORCE=In;
+  }
+
+  if(FINH==1) {
+    FME=0;
+  }
+
+  if(FME==1) {
+    *FRC=1;
+    
+    if(RATE==0) {
+      *AO_FORCE=*AO_FORCE+((In-0)/1);
+    }
+    else {
+      *AO_FORCE=*AO_FORCE+((In-0)/RATE);
+    }
+
+    if(*AO_FORCE>In) {
+      *AO_FORCE=In;
+    }
+  }
+}
+
