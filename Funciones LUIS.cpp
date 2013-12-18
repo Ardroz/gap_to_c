@@ -391,3 +391,46 @@ void A_FORCE_FUNCTION(int B_ENABLE, int FINH, int FMD, double In, double TUNE, d
     *FRC=0;
   }
 }
+
+double A_LIMITER_FUNCTION(int B_ENABLE, double In, double IN_HI , double IN_LOW) {
+  
+  //B_ENABLE    Habilitación de la función
+  //In      Señal de entrada a la función
+  //IN_LOW    Limite inferior de la función
+  //IN_HI     Limite superior de la función
+  //A_LIMITER   Señal de salida de la función
+  double A_LIMITER;
+
+  if(B_ENABLE==1)
+  {
+    if(In > IN_HI)
+    {
+      A_LIMITER=IN_HI;
+    }
+    else if(In<IN_LOW)
+    {
+      A_LIMITER=IN_LOW;
+    }
+    else if (IN_LOW>IN_HI)
+    {
+      if(In<IN_HI)
+      {
+        A_LIMITER=IN_LOW;
+      }
+      else if(In>IN_HI)
+      {
+        A_LIMITER=IN_HI;
+      }
+    }
+    else
+    {
+      A_LIMITER=In;
+    }
+  }
+  else
+  {
+    A_LIMITER=0;
+  }
+
+  return A_LIMITER;
+}
