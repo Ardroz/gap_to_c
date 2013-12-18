@@ -13,9 +13,9 @@ var rl = readline.createInterface({
 
 function databaseInstance(){
   var connection = mysql.createConnection({
-    host     : 'localhost',
-    password : '',//n0m3l0
-    user     : 'root'
+    host     : '192.168.5.100',
+    password : 'lucas',//n0m3l0
+    user     : 'ARDROZ'
   });
   return connection;
 }
@@ -144,7 +144,7 @@ function blockSwitch ( parameters ) {
       code = code.concat( inputValues [numbervars- 1]).concat(") { \n");
       var i = 1;
       while(i < (numbervars - 1)){
-        code = code.concat("  case_").concat(i).concat(":\n    ");
+        code = code.concat("  case ").concat(i).concat(":\n    ");
         code = code.concat( stringOutputs );
         code = code.concat(inputValues [i]).concat(";\n  ");
         code = code.concat( "break;\n")
@@ -599,6 +599,61 @@ function blockSwitch ( parameters ) {
       valuelast = valuelast.concat( parameters.block.Name );
 
       
+      return code;
+      break;
+
+    case "SFC_STEP":
+      parameters.fields.forEach( function ( element, index, array ) {
+        if ( element.IOType === 'Input' || element.IOType === 'Tune' ) {
+          if ( element.FieldName.substring(0,7) === 'SF_SEL_' ) {
+            if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( {
+                field: element.FieldName,
+                value: element.Value.replace(/\56/g,"_")
+              } );
+            }else{
+              inputValues.push( {
+                field: element.FieldName,
+                value: element.Value
+              } );
+            }
+          }
+        } else if ( element.IOType === 'Output' ) {
+          outputValues.push(element.FieldName);
+          console.log( element.FieldName );
+        }
+      });
+
+      inputValues.sort( function ( a, b ) {
+        if ( Number(a.field.substring( 7, a.field.length )) > 
+          Number(b.field.substring( 7, b.field.length )))
+          return 1;
+        if ( Number(a.field.substring( 7, a.field.length )) < 
+          Number(b.field.substring( 7, b.field.length )))
+          return -1;
+        return 0;
+      });
+      var switchCase = parameters.block.Category + '_' + parameters.block.Name + 
+        '_' + parameters.block.BlockType + '_COUNTER';
+
+      code = 'int ' + switchCase + ' = 1;\n';
+
+      code+= 'switch( ' + switchCase + ' ) {\n';
+      
+      inputValues.forEach( function ( element, index, array ) {
+        code+= '\tcase ' + (index + 1) + ':\n';
+        code+= '\t\tif ( ' + element.value + ' ) {\n';
+        code+= '\t\t\t' + switchCase + '++;\n';
+        code+= '\t\t}\n';
+        code+= '\t\tbreak;\n';
+
+        if ( (index + 1) === array.length ){
+          code+= switchCase.substring( 0, (switchCase.length - 8) ) + '';;
+        }
+      });
+
+      code+= '}\n';
+
       return code;
       break;
 
