@@ -591,3 +591,16 @@ void DEADBAND_FUNCTION ( bool B_ENABLE, double DB_1, double DB_2, double DEMAND,
 
   return;
 }
+
+void SAMP_HOLD_FUNCTION( bool B_ENABLE,double IN_1,double IN_2,double IN_3,double IN_4,bool TRIGGER, double *OUT_1 ,double *OUT_2 ,double *OUT_3 ,double *OUT_4, bool *TRIGGER_PAST) {
+
+  if( TRIGGER_PAST == 0 ) {
+    if( TRIGGER ) {
+      *OUT_1=IN_1;
+      *OUT_2=IN_2;
+      *OUT_3=IN_3;
+      *OUT_4=IN_4;
+    }
+  }
+  *TRIGGER_PAST = *TRIGGER;
+}

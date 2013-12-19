@@ -658,6 +658,37 @@ function blockSwitch ( parameters ) {
       return code;
       break;
 
+    case "SAMP_HOLD":
+      var past;
+      past = parameters.block.Category + '_' + parameters.block.Name + '_' + parameters.block.BlockType + '_' + 'TRIGGERLAST';
+      code = "bool " + past + ';\n'; 
+      parameters.fields.forEach( function ( element, index, array ){
+        if ( element.IOType === 'Input' || element.IOType === 'Tune' ){
+          if( element.FieldName === 'TRIGGER'){
+            while(inputValues.length < 5 ) {
+              inputValues.push( '0' );
+            }
+          }
+          if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( element.Value.replace(/\56/g,"_") );
+          }else{
+              inputValues.push( element.Value );
+          }
+        } else if(element.IOType === 'Output'){
+          outputValues.push( '&' + parameters.block.Category + '_' + parameters.block.Name + '_' + element.FieldName );
+        }
+      });
+      while(outputValues.length < 4 ) {
+              outputValues.push( '0' );
+            }
+
+      stringInputs = inputValues.join( ',' );
+      stringOutputs = outputValues.join( ',' );
+      code += parameters.block.BlockType + '_FUNCTION (' + stringInputs + ',' + stringOutputs + ',';
+        code += '&' + past + ");\n";
+      return code;
+      break;
+
     default:
       parameters.fields.forEach( function ( element, index, array ) {
         if ( element.IOType === 'Input' || element.IOType === 'Tune' ) {
