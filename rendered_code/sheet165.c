@@ -1,0 +1,294 @@
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_CDP100_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_CDP100_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_74;
+  break;
+  case 3:
+    OP_INTRFC_CDP100_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_74;
+  break;
+  case 4:
+    OP_INTRFC_CDP100_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_CDP100_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_74;
+  break;
+  case 6:
+    OP_INTRFC_CDP100_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_CDPABRT_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_CDPABRT_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_72;
+  break;
+  case 3:
+    OP_INTRFC_CDPABRT_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_72;
+  break;
+  case 4:
+    OP_INTRFC_CDPABRT_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_CDPABRT_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_72;
+  break;
+  case 6:
+    OP_INTRFC_CDPABRT_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_CDPAM_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_CDPAM_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_71;
+  break;
+  case 3:
+    OP_INTRFC_CDPAM_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_71;
+  break;
+  case 4:
+    OP_INTRFC_CDPAM_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_CDPAM_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_71;
+  break;
+  case 6:
+    OP_INTRFC_CDPAM_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_CDPAT0_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_CDPAT0_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_73;
+  break;
+  case 3:
+    OP_INTRFC_CDPAT0_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_73;
+  break;
+  case 4:
+    OP_INTRFC_CDPAT0_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_CDPAT0_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_73;
+  break;
+  case 6:
+    OP_INTRFC_CDPAT0_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+OP_INTRFC_CDPCALENBL_B_NAME = OP_INTRFC_CDPCALENMX_B_MUX_N_1;
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_CDPCALENMX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_CDPCALENMX_B_MUX_N_1 = DATA_IO_LL2_BW_V_70;
+  break;
+  case 3:
+    OP_INTRFC_CDPCALENMX_B_MUX_N_1 = DATA_IO_RL2_BW_V_70;
+  break;
+  case 4:
+    OP_INTRFC_CDPCALENMX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_CDPCALENMX_B_MUX_N_1 = DATA_IO_DCS_BW_V_70;
+  break;
+  case 6:
+    OP_INTRFC_CDPCALENMX_B_MUX_N_1 = *FALSE;
+  break;
+}
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_CDPNULL_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_CDPNULL_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_69;
+  break;
+  case 3:
+    OP_INTRFC_CDPNULL_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_69;
+  break;
+  case 4:
+    OP_INTRFC_CDPNULL_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_CDPNULL_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_69;
+  break;
+  case 6:
+    OP_INTRFC_CDPNULL_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_CDPSTRK_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_CDPSTRK_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_68;
+  break;
+  case 3:
+    OP_INTRFC_CDPSTRK_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_68;
+  break;
+  case 4:
+    OP_INTRFC_CDPSTRK_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_CDPSTRK_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_68;
+  break;
+  case 6:
+    OP_INTRFC_CDPSTRK_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+OP_INTRFC_CDP_ABORT_B_NAME = OP_INTRFC_CDPABRT_MX_B_MUX_N_1;
+OP_INTRFC_CDP_AT_0_B_NAME = OP_INTRFC_CDPAT0_MX_B_MUX_N_1;
+OP_INTRFC_CDP_AT_100_B_NAME = OP_INTRFC_CDP100_MX_B_MUX_N_1;
+OP_INTRFC_CDP_A_M_B_NAME = OP_INTRFC_CDPAM_MX_B_MUX_N_1;
+OP_INTRFC_CDP_NULL_B_NAME = OP_INTRFC_CDPNULL_MX_B_MUX_N_1;
+OP_INTRFC_CDP_STROKE_B_NAME = OP_INTRFC_CDPSTRK_MX_B_MUX_N_1;
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_ST8100_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_ST8100_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_81;
+  break;
+  case 3:
+    OP_INTRFC_ST8100_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_81;
+  break;
+  case 4:
+    OP_INTRFC_ST8100_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_ST8100_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_81;
+  break;
+  case 6:
+    OP_INTRFC_ST8100_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_ST8ABRT_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_ST8ABRT_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_79;
+  break;
+  case 3:
+    OP_INTRFC_ST8ABRT_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_79;
+  break;
+  case 4:
+    OP_INTRFC_ST8ABRT_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_ST8ABRT_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_79;
+  break;
+  case 6:
+    OP_INTRFC_ST8ABRT_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_ST8AM_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_ST8AM_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_78;
+  break;
+  case 3:
+    OP_INTRFC_ST8AM_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_78;
+  break;
+  case 4:
+    OP_INTRFC_ST8AM_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_ST8AM_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_78;
+  break;
+  case 6:
+    OP_INTRFC_ST8AM_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_ST8AT0_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_ST8AT0_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_80;
+  break;
+  case 3:
+    OP_INTRFC_ST8AT0_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_80;
+  break;
+  case 4:
+    OP_INTRFC_ST8AT0_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_ST8AT0_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_80;
+  break;
+  case 6:
+    OP_INTRFC_ST8AT0_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+OP_INTRFC_ST8CALENBL_B_NAME = OP_INTRFC_ST8CALENMX_B_MUX_N_1;
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_ST8CALENMX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_ST8CALENMX_B_MUX_N_1 = DATA_IO_LL2_BW_V_77;
+  break;
+  case 3:
+    OP_INTRFC_ST8CALENMX_B_MUX_N_1 = DATA_IO_RL2_BW_V_77;
+  break;
+  case 4:
+    OP_INTRFC_ST8CALENMX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_ST8CALENMX_B_MUX_N_1 = DATA_IO_DCS_BW_V_77;
+  break;
+  case 6:
+    OP_INTRFC_ST8CALENMX_B_MUX_N_1 = *FALSE;
+  break;
+}
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_ST8NULL_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_ST8NULL_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_76;
+  break;
+  case 3:
+    OP_INTRFC_ST8NULL_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_76;
+  break;
+  case 4:
+    OP_INTRFC_ST8NULL_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_ST8NULL_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_76;
+  break;
+  case 6:
+    OP_INTRFC_ST8NULL_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+switch(CNTRL_MODE_SELECT_I_NAME) { 
+  case 1:
+    OP_INTRFC_ST8STRK_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 2:
+    OP_INTRFC_ST8STRK_MX_B_MUX_N_1 = DATA_IO_LL2_BW_V_75;
+  break;
+  case 3:
+    OP_INTRFC_ST8STRK_MX_B_MUX_N_1 = DATA_IO_RL2_BW_V_75;
+  break;
+  case 4:
+    OP_INTRFC_ST8STRK_MX_B_MUX_N_1 = *FALSE;
+  break;
+  case 5:
+    OP_INTRFC_ST8STRK_MX_B_MUX_N_1 = DATA_IO_DCS_BW_V_75;
+  break;
+  case 6:
+    OP_INTRFC_ST8STRK_MX_B_MUX_N_1 = *FALSE;
+  break;
+}
+OP_INTRFC_ST8_ABORT_B_NAME = OP_INTRFC_ST8ABRT_MX_B_MUX_N_1;
+OP_INTRFC_ST8_AT_0_B_NAME = OP_INTRFC_ST8AT0_MX_B_MUX_N_1;
+OP_INTRFC_ST8_AT_100_B_NAME = OP_INTRFC_ST8100_MX_B_MUX_N_1;
+OP_INTRFC_ST8_A_M_B_NAME = OP_INTRFC_ST8AM_MX_B_MUX_N_1;
+OP_INTRFC_ST8_NULL_B_NAME = OP_INTRFC_ST8NULL_MX_B_MUX_N_1;
+OP_INTRFC_ST8_STROKE_B_NAME = OP_INTRFC_ST8STRK_MX_B_MUX_N_1;

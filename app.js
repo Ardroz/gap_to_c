@@ -13,9 +13,9 @@ var rl = readline.createInterface({
 
 function databaseInstance(){
   var connection = mysql.createConnection({
-    host     : '192.168.5.100',
-    password : 'lucas',//n0m3l0
-    user     : 'ARDROZ'
+    host     : 'localhost',
+    password : '',//n0m3l0
+    user     : 'root'
   });
   return connection;
 }
@@ -114,6 +114,7 @@ function blockSwitch ( parameters ) {
     case "TCP_P":
     case "TUNE_VAR":
     case "UDP_P":
+    case "PID_DB":
 
       code = "// ";
       code = code.concat(parameters.block.BlockType).concat(" \n")
@@ -744,6 +745,14 @@ function blockSwitch ( parameters ) {
     });*/
   }
 
+  if (parameters.block.BlockType === 'DELAY' ) {
+
+    stringInputs =  parameters.block.Category + '_' + parameters.block.Name + '_' + parameters.block.BlockType + '_' + 'COUNTER';
+    code = 'double ' + stringInputs + ';\n'
+    bigCode = bigCode.slice(0,bigCode.length - 3);
+    bigCode += ', &' + stringInputs + ');\n';
+    bigCode = code + bigCode;
+  };
   return bigCode;
 
   function arguments ( parameters ) {
