@@ -316,6 +316,7 @@ function blockSwitch ( parameters ) {
     case "B_NAME":
     case "I_NAME":
     case "T_NAME":
+    case "S_NAME":
     case "ZMINUS1":
     case "ZMINUS1_B":
 
@@ -522,7 +523,7 @@ function blockSwitch ( parameters ) {
       lol = lol.concat(parameters.block.Category).concat('_');
       lol = lol.concat(parameters.block.Name).concat('_');
       lol = lol.concat('LAST_TRIGGER');
-      code = "  bool ";
+      code = "  int ";
       code = code.concat(lol).concat(';\n')
       
       code = code.concat(parameters.block.BlockType).concat("_FUNCTION(");
@@ -534,7 +535,7 @@ function blockSwitch ( parameters ) {
       break;
 
     case "T_FLIPFLOP":
-      var lol = "  bool ";
+      var lol = "  int ";
       lol = lol.concat(parameters.block.Category).concat('_');
       lol = lol.concat(parameters.block.Name).concat('_');
       code = lol.concat( "IN_1_LAST; \n" );
@@ -571,12 +572,12 @@ function blockSwitch ( parameters ) {
       var valuelast1;
       var valuecounter;
 
-      code = code.concat("  bool ");
+      code = code.concat("  int ");
       valuelast = parameters.block.Category.concat('_');
       valuelast = valuelast.concat( parameters.block.Name ).concat('_TRIGGERLAST');
       code = code.concat( valuelast ).concat(";\n");
 
-      code = code.concat("  bool ");
+      code = code.concat("  int ");
       valuelast1 = parameters.block.Category.concat('_');
       valuelast1 = valuelast1.concat( parameters.block.Name ).concat('_RSTLAST');
       code = code.concat(valuelast1).concat(";\n");
@@ -603,6 +604,96 @@ function blockSwitch ( parameters ) {
       
       return code;
       break;
+
+    case "LATCH1":
+      var RST;
+      var OVRD;
+      var ACKN;
+      var FA_RST;
+
+      parameters.fields.forEach( function ( element, index, array ) {
+        if ( element.IOType === 'Input' || element.IOType === 'Tune' ) {
+          
+          if ( element.FieldName.substring(0,3) === 'IN_' ) {
+            if( /[a-z]/i.test( element.Value ) ){
+              inputValues.push( element.Value.replace(/\56/g,"_"));
+            } else {
+              inputValues.push( element.Value );
+            }
+          } else if (element.FieldName === 'RST'){
+            if( /[a-z]/i.test( element.Value ) ){
+              RST =  element.Value.replace(/\56/g,"_");
+            } else {
+              RST =  element.Value ;
+            }
+          } else if (element.FieldName === 'OVRD'){
+            if( /[a-z]/i.test( element.Value ) ){
+              OVRD =  element.Value.replace(/\56/g,"_");
+            } else {
+              OVRD =  element.Value ;
+            }
+          } else if (element.FieldName === 'ACKN'){
+            if( /[a-z]/i.test( element.Value ) ){
+              ACKN =  element.Value.replace(/\56/g,"_");
+            } else {
+              ACKN =  element.Value ;
+            }
+          } else if (element.FieldName === 'FA_RST'){
+            if( /[a-z]/i.test( element.Value ) ){
+              FA_RST =  element.Value.replace(/\56/g,"_");
+            } else {
+              FA_RST =  element.Value ;
+            }
+          }
+        } else if ( element.IOType === 'Output' ) {
+          outputValues.push( parameters.block.Category + '_' + parameters.block.Name + '_' + element.FieldName);
+
+        }
+      });
+
+      code = 'int  ' + parameters.block.Category + '_' + parameters.block.Name + '_COUNTERALM;\n';
+      code += 'if ( ' + OVRD + ' ) {';
+      inputValues.forEach( function ( element, index, array){
+        code += '\n  if ( ' + element + ' ) {';
+        code += '\n    ' + parameters.block.Category + '_' + parameters.block.Name + '_COUNTERALM++;' ;
+        code += '\n    ' + parameters.block.Category + '_' + parameters.block.Name + '_ALM_NO_' + (index + 1);
+        code += ' = ' + parameters.block.Category + '_' + parameters.block.Name + '_COUNTERALM;';
+        code +=  '\n    if( ' + parameters.block.Category + '_' + parameters.block.Name + '_COUNTERALM == 1 ) {';
+        code += '\n      ' + parameters.block.Category + '_' + parameters.block.Name + '_FIRST_ALM = ' + (index + 1) + ';';
+        code += '\n    }\n  }'
+      });
+      code += '\n} else {';
+      inputValues.forEach( function ( element, index, array){
+        code += '\n  if ( ' + element + ' ) {';
+        code += '\n    ' + parameters.block.Category + '_' + parameters.block.Name + '_COUNTERALM++;' ;
+        code += '\n    ' + parameters.block.Category + '_' + parameters.block.Name + '_ALM_NO_' + (index + 1);
+        code += ' = ' + parameters.block.Category + '_' + parameters.block.Name + '_COUNTERALM;';
+        code += '\n    ' + parameters.block.Category + '_' + parameters.block.Name + '_SEL_' + (index + 1);
+        code += ' = 1;';
+        code += ' \n    ' + parameters.block.Category + '_' + parameters.block.Name + '_LATCH1 = 1;';
+        code += ' \n    ' + parameters.block.Category + '_' + parameters.block.Name + '_HORN = 1;';
+        code +=  '\n    if( ' + parameters.block.Category + '_' + parameters.block.Name + '_COUNTERALM == 1 ) {';
+        code += '\n      ' + parameters.block.Category + '_' + parameters.block.Name + '_FIRST_ALM = ' + (index + 1) + ';';
+        code += '\n    }\n  }\n';
+
+      });
+      code += '\n}';
+      code += "\nif ( " + ACKN + ' ) {';
+      code += '\n  ' + parameters.block.Category + '_' + parameters.block.Name + '_HORN = 0;';
+      code += '\n}';
+      code += "\nif ( " + FA_RST + ' ) {';
+      code += '\n  ' + parameters.block.Category + '_' + parameters.block.Name + '_COUNTERALM = 0;';
+      code += '\n  ' + parameters.block.Category + '_' + parameters.block.Name + '_FIRST_ALM = 0;';
+      code += '\n}';
+      code += "\nif ( " + RST + ' ) {';
+      inputValues.forEach( function ( element, index, array){
+        code += '\n  ' + parameters.block.Category + '_' + parameters.block.Name + '_SEL_' + (index+1) + ' = 0;';
+      });
+        code += '\n  ' + parameters.block.Category + '_' + parameters.block.Name + '_HORN' + ' = 0;';
+        code += '\n  ' + parameters.block.Category + '_' + parameters.block.Name + '_LATCH1' + ' = 0;\n}\n';
+
+      return code;
+    break;
 
     case "SFC_STEP":
       var tcond = new Array;
@@ -647,7 +738,7 @@ function blockSwitch ( parameters ) {
     case "SAMP_HOLD":
       var past;
       past = parameters.block.Category + '_' + parameters.block.Name + '_' + parameters.block.BlockType + '_' + 'TRIGGERLAST';
-      code = "bool " + past + ';\n'; 
+      code = "int " + past + ';\n'; 
       parameters.fields.forEach( function ( element, index, array ){
         if ( element.IOType === 'Input' || element.IOType === 'Tune' ){
           if( element.FieldName === 'TRIGGER'){
@@ -678,6 +769,7 @@ function blockSwitch ( parameters ) {
     default:
       parameters.fields.forEach( function ( element, index, array ) {
         if ( element.IOType === 'Input' || element.IOType === 'Tune' ) {
+
           if ( element.Value === null ) {
             inputValues.push('0')
           } else{
@@ -687,6 +779,7 @@ function blockSwitch ( parameters ) {
               inputValues.push( element.Value );
             }
           }
+
         } else {
           if ( element.IOType === 'Output' ) {
             outputValues.push( element.FieldName );
